@@ -1,4 +1,4 @@
-package sbnz.integracija.main;
+package sbnz.integracija;
 
 import java.util.Arrays;
 
@@ -7,10 +7,16 @@ import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.KieContainer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
+@EnableScheduling
+@EnableTransactionManagement
+@EntityScan(basePackages = {"sbnz.integracija.domain", "sbnz.integracija.security.domain"})
 public class ChefAdvisor {
 
 	public static void main(String[] args) {
