@@ -42,4 +42,9 @@ public interface IngredientService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all by current user
+     * */
+    Page<IngredientDTO> findByUserIsCurrentUser(Pageable pageable);
 }

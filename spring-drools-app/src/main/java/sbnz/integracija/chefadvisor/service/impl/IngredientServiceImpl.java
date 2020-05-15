@@ -1,19 +1,21 @@
 package sbnz.integracija.chefadvisor.service.impl;
 
-import sbnz.integracija.chefadvisor.service.IngredientService;
-import sbnz.integracija.chefadvisor.domain.Ingredient;
-import sbnz.integracija.chefadvisor.repository.IngredientRepository;
-import sbnz.integracija.chefadvisor.service.dto.IngredientDTO;
-import sbnz.integracija.chefadvisor.service.mapper.IngredientMapper;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import sbnz.integracija.chefadvisor.domain.Ingredient;
+import sbnz.integracija.chefadvisor.repository.IngredientRepository;
+import sbnz.integracija.chefadvisor.service.IngredientService;
+import sbnz.integracija.chefadvisor.service.dto.IngredientDTO;
+import sbnz.integracija.chefadvisor.service.mapper.IngredientMapper;
 
 /**
  * Service Implementation for managing {@link Ingredient}.
@@ -84,5 +86,23 @@ public class IngredientServiceImpl implements IngredientService {
     public void delete(Long id) {
         log.debug("Request to delete Ingredient : {}", id);
         ingredientRepository.deleteById(id);
+    }
+    
+    /**
+     * Get all by user is current user
+     * 
+     * @param pageable the pagination information
+     * @return the list of entities
+     * 
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<IngredientDTO> findByUserIsCurrentUser(Pageable pageable) {
+        log.debug("Request to get all Ingredients by current user");
+        List<Ingredient> ingredientList = ingredientRepository.findByUserIsCurrentUser();
+        int start = (int) pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > ingredientList.size() ? ingredientList.size() : (start + pageable.getPageSize());
+        Page<Ingredient> pages = new PageImpl<Ingredient>(ingredientList.subList(start, end), pageable, ingredientList.size());
+        return pages.map(ingredientMapper::toDto);
     }
 }
