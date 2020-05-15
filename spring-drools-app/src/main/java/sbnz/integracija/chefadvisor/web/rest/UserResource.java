@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ import sbnz.integracija.chefadvisor.config.Constants;
 import sbnz.integracija.chefadvisor.domain.User;
 import sbnz.integracija.chefadvisor.repository.UserRepository;
 import sbnz.integracija.chefadvisor.security.AuthoritiesConstants;
+import sbnz.integracija.chefadvisor.service.CalorieConfigurationService;
 import sbnz.integracija.chefadvisor.service.MailService;
 import sbnz.integracija.chefadvisor.service.UserService;
 import sbnz.integracija.chefadvisor.service.dto.CalorieConfigurationDTO;
@@ -79,12 +81,15 @@ public class UserResource {
 
     private final UserRepository userRepository;
 
+    private final CalorieConfigurationService calorieConfigurationService;
+    
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, CalorieConfigurationService calorieConfigurationService ) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.calorieConfigurationService = calorieConfigurationService;
     }
 
     /**
@@ -197,5 +202,16 @@ public class UserResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "A user is deleted with identifier " + login, login)).build();
     }
     
-    
+    /**
+     * {@code PUT /users/calories} : add calorie intake of the User.
+     * 
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)}.
+     * */
+    @PutMapping("/users/calories")
+    public ResponseEntity<Object> setCaloricIntake(@AuthenticationPrincipal User user, @RequestBody CalorieIntakeDTO calorieIntakeDTO) {
+    	Double intake = calorieIntakeDTO.calculateDailyIntake();
+    	CalorieConfigurationDTO calorieConfigurationDTO = new CalorieConfigurationDTO(intake, user);
+        CalorieConfigurationDTO result = calorieConfigurationService.save(calorieConfigurationDTO);
+    	return ResponseEntity.ok().body(result);
+    }
 }

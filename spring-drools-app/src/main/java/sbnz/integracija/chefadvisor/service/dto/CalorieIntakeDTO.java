@@ -1,5 +1,6 @@
 package sbnz.integracija.chefadvisor.service.dto;
 
+import sbnz.integracija.chefadvisor.domain.enumeration.ActivityLevel;
 import sbnz.integracija.chefadvisor.domain.enumeration.Gender;
 
 public class CalorieIntakeDTO {
@@ -7,17 +8,19 @@ public class CalorieIntakeDTO {
 	private Double height;
 	private Integer age;
 	private Gender gender;
+	private ActivityLevel level;
 	
 	public CalorieIntakeDTO() {
 		super();
 	}
 	
-	public CalorieIntakeDTO(Double bodyWeight, Double height, Integer age, Gender gender) {
+	public CalorieIntakeDTO(Double bodyWeight, Double height, Integer age, Gender gender, ActivityLevel level) {
 		super();
 		this.bodyWeight = bodyWeight;
 		this.height = height;
 		this.age = age;
 		this.gender = gender;
+		this.level = level;
 	}
 
 	public Double getBodyWeight() {
@@ -45,10 +48,13 @@ public class CalorieIntakeDTO {
 		this.gender = gender;
 	}
 	
-	public Double calculateBMR() {
+	public Double calculateDailyIntake() {
 		Integer remainder = this.gender.equals(Gender.MALE) ? 5 : (161 * -1);
-		return 10 * this.bodyWeight + 6.25 * this.height - 5 * this.age + remainder;
+		Double bmr = 10 * this.bodyWeight + 6.25 * this.height - 5 * this.age + remainder;
+		return bmr * this.level.getActivityIndex();
 	}
+	
+	
 	
 	
 }

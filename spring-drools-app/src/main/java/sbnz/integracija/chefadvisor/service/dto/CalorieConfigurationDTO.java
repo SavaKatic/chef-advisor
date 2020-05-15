@@ -3,6 +3,8 @@ package sbnz.integracija.chefadvisor.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+import sbnz.integracija.chefadvisor.domain.User;
+
 /**
  * A DTO for the {@link sbnz.integracija.chefadvisor.domain.CalorieConfiguration} entity.
  */
@@ -30,6 +32,29 @@ public class CalorieConfigurationDTO implements Serializable {
     private Long userId;
 
     private String userLogin;
+    
+    public CalorieConfigurationDTO() {
+    	super();
+    }
+    
+    public CalorieConfigurationDTO(Double dailyCaloricIntake, User user) {
+    	Double minimalIntake = dailyCaloricIntake - 150;
+    	Double maximalIntake = dailyCaloricIntake + 150;
+    	
+    	this.breakfastLow = minimalIntake / 100 * 40;
+    	this.lunchLow = minimalIntake / 100 * 30;
+    	this.dinnerLow = minimalIntake / 100 * 20;
+    	this.snackLow = minimalIntake / 100 * 10;
+    	
+    	this.breakfastHigh = maximalIntake / 100 * 40;
+    	this.lunchHigh = maximalIntake / 100 * 30;
+    	this.dinnerHigh = maximalIntake / 100 * 20;
+    	this.snackLow = maximalIntake / 100 * 10;
+    	
+    	this.userId = user.getId();
+    	this.userLogin = user.getLogin();
+    }
+    
     
     public Long getId() {
         return id;
