@@ -49,4 +49,11 @@ public interface DishService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Get all by user is current user
+     * 
+     * @return the list of entities
+     * */
+    Page<DishDTO> findByUserIsCurrentUser(Pageable pageable);
 }

@@ -102,6 +102,20 @@ public class DishResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+    
+    /**
+     * {@code GET  /dishes} : get all the dishes that user made.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of dishes in body.
+     */
+    @GetMapping("/dishHistory")
+    public ResponseEntity<List<DishDTO>> getUserDishHistory(Pageable pageable) {
+        log.debug("REST request to get a page of Dishes by current user");
+        Page<DishDTO> page = dishService.findByUserIsCurrentUser(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 
     /**
      * {@code GET  /dishes/:id} : get the "id" dish.

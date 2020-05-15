@@ -26,4 +26,7 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
 
     @Query("select dish from Dish dish left join fetch dish.types left join fetch dish.users where dish.id =:id")
     Optional<Dish> findOneWithEagerRelationships(@Param("id") Long id);
+    
+    @Query("select dish from Dish dish left join dish.users u where u.login = ?#{principal.username}")
+    List<Dish> findByUserIsCurrentUser();
 }

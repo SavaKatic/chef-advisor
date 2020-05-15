@@ -2,6 +2,7 @@ package sbnz.integracija.chefadvisor.service.impl;
 
 import sbnz.integracija.chefadvisor.service.DishService;
 import sbnz.integracija.chefadvisor.domain.Dish;
+import sbnz.integracija.chefadvisor.domain.Ingredient;
 import sbnz.integracija.chefadvisor.repository.DishRepository;
 import sbnz.integracija.chefadvisor.service.dto.DishDTO;
 import sbnz.integracija.chefadvisor.service.mapper.DishMapper;
@@ -9,10 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -94,4 +97,19 @@ public class DishServiceImpl implements DishService {
         log.debug("Request to delete Dish : {}", id);
         dishRepository.deleteById(id);
     }
+
+    /**
+     * Get all by user is current user
+     * 
+     * @return the list of entities
+     * */
+    public Page<DishDTO> findByUserIsCurrentUser(Pageable pageable) {
+        log.debug("Request to get all Dishes by current user");
+        List<Dish> dishList = dishRepository.findByUserIsCurrentUser();
+        int start = (int) pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > dishList.size() ? dishList.size() : (start + pageable.getPageSize());
+        Page<Dish> pages = new PageImpl<Dish>(dishList.subList(start, end), pageable, dishList.size());
+        return pages.map(dishMapper::toDto);
+    }
+
 }

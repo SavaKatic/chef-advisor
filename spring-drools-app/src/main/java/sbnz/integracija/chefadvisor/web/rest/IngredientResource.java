@@ -96,6 +96,20 @@ public class IngredientResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+    
+    /**
+     * {@code GET  /ingredients} : get all the ingredients.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ingredients in body.
+     */
+    @GetMapping("/fridge")
+    public ResponseEntity<List<IngredientDTO>> getUserFridge(Pageable pageable) {
+        log.debug("REST request to get a page of User Ingredients");
+        Page<IngredientDTO> page = ingredientService.findByUserIsCurrentUser(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 
     /**
      * {@code GET  /ingredients/:id} : get the "id" ingredient.
