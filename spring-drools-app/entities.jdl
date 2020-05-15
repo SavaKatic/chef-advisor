@@ -39,6 +39,11 @@ entity CalorieConfiguration {
     snackHigh Double
 }
 
+entity Rating {
+	comment String,
+    rating Integer
+}
+
 
 enum DishCategory {
 	BREAKFAST, LUNCH, DINNER, SNACK
@@ -56,15 +61,18 @@ relationship ManyToMany {
 relationship OneToMany {
 	IngredientModel to Ingredient{ingredientModel(name)} 
   Dish to Ingredient{dish(name)}
+  Dish to Rating{dish(name)}
 }
 
 relationship ManyToOne {
   Ingredient{user(login)} to User
+  Rating{user(login)} to User
 }
 
 relationship OneToOne {
 	CalorieConfiguration{user(login)} to User
 }
+
 
 paginate UnitType, IngredientType, DishType with infinite-scroll
 paginate Dish, IngredientModel, Ingredient with pagination

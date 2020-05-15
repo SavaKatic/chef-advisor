@@ -32,6 +32,10 @@ import { RouterModule } from '@angular/router';
         path: 'calorie-configuration',
         loadChildren: () =>
           import('./calorie-configuration/calorie-configuration.module').then(m => m.ChefadvisorCalorieConfigurationModule)
+      },
+      {
+        path: 'rating',
+        loadChildren: () => import('./rating/rating.module').then(m => m.ChefadvisorRatingModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

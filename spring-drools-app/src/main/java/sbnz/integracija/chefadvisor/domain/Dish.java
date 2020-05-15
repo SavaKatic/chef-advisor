@@ -44,6 +44,10 @@ public class Dish implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Ingredient> ingredients = new HashSet<>();
 
+    @OneToMany(mappedBy = "dish")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Rating> ratings = new HashSet<>();
+
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "dish_types",
@@ -142,6 +146,31 @@ public class Dish implements Serializable {
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public Dish ratings(Set<Rating> ratings) {
+        this.ratings = ratings;
+        return this;
+    }
+
+    public Dish addRating(Rating rating) {
+        this.ratings.add(rating);
+        rating.setDish(this);
+        return this;
+    }
+
+    public Dish removeRating(Rating rating) {
+        this.ratings.remove(rating);
+        rating.setDish(null);
+        return this;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
     }
 
     public Set<DishType> getTypes() {

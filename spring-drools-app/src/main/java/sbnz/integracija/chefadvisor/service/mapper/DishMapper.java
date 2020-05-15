@@ -15,6 +15,8 @@ public interface DishMapper extends EntityMapper<DishDTO, Dish> {
 
     @Mapping(target = "ingredients", ignore = true)
     @Mapping(target = "removeIngredient", ignore = true)
+    @Mapping(target = "ratings", ignore = true)
+    @Mapping(target = "removeRating", ignore = true)
     @Mapping(target = "removeTypes", ignore = true)
     @Mapping(target = "removeUsers", ignore = true)
     Dish toEntity(DishDTO dishDTO);

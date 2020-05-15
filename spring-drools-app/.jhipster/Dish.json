@@ -24,6 +24,12 @@
             "relationshipName": "ingredient"
         },
         {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "rating",
+            "otherEntityRelationshipName": "dish",
+            "relationshipName": "rating"
+        },
+        {
             "relationshipType": "many-to-many",
             "otherEntityName": "dishType",
             "otherEntityRelationshipName": "dishes",

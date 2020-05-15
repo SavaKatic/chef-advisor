@@ -1,0 +1,40 @@
+{
+    "name": "Rating",
+    "fields": [
+        {
+            "fieldName": "comment",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "rating",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "rating",
+            "relationshipName": "user",
+            "otherEntityField": "login"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "dish",
+            "otherEntityRelationshipName": "rating",
+            "relationshipName": "dish",
+            "otherEntityField": "name"
+        }
+    ],
+    "changelogDate": "20200515194000",
+    "entityTableName": "rating",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

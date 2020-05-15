@@ -104,12 +104,12 @@ public class DishServiceImpl implements DishService {
      * @return the list of entities
      * */
     public Page<DishDTO> findByUserIsCurrentUser(Pageable pageable) {
-        log.debug("Request to get all Dishes by current user");
-        List<Dish> dishList = dishRepository.findByUserIsCurrentUser();
-        int start = (int) pageable.getOffset();
-        int end = (start + pageable.getPageSize()) > dishList.size() ? dishList.size() : (start + pageable.getPageSize());
-        Page<Dish> pages = new PageImpl<Dish>(dishList.subList(start, end), pageable, dishList.size());
-        return pages.map(dishMapper::toDto);
-    }
+      log.debug("Request to get all Dishes by current user");
+      List<Dish> dishList = dishRepository.findByUserIsCurrentUser();
+      int start = (int) pageable.getOffset();
+      int end = (start + pageable.getPageSize()) > dishList.size() ? dishList.size() : (start + pageable.getPageSize());
+      Page<Dish> pages = new PageImpl<Dish>(dishList.subList(start, end), pageable, dishList.size());
+      return pages.map(dishMapper::toDto);
+  }
 
 }
