@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="calorieConfiguration">
+            <h2><span>Calorie Configuration</span> {{ calorieConfiguration.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Breakfast Low</span></dt>
+                <dd>
+                    <span>{{ calorieConfiguration.breakfastLow }}</span>
+                </dd>
+                <dt><span>Breakfast High</span></dt>
+                <dd>
+                    <span>{{ calorieConfiguration.breakfastHigh }}</span>
+                </dd>
+                <dt><span>Lunch Low</span></dt>
+                <dd>
+                    <span>{{ calorieConfiguration.lunchLow }}</span>
+                </dd>
+                <dt><span>Lunch High</span></dt>
+                <dd>
+                    <span>{{ calorieConfiguration.lunchHigh }}</span>
+                </dd>
+                <dt><span>Dinner Low</span></dt>
+                <dd>
+                    <span>{{ calorieConfiguration.dinnerLow }}</span>
+                </dd>
+                <dt><span>Dinner High</span></dt>
+                <dd>
+                    <span>{{ calorieConfiguration.dinnerHigh }}</span>
+                </dd>
+                <dt><span>Snack Low</span></dt>
+                <dd>
+                    <span>{{ calorieConfiguration.snackLow }}</span>
+                </dd>
+                <dt><span>Snack High</span></dt>
+                <dd>
+                    <span>{{ calorieConfiguration.snackHigh }}</span>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    {{ calorieConfiguration.userLogin }}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/calorie-configuration', calorieConfiguration.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

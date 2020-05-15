@@ -1,0 +1,53 @@
+{
+    "name": "IngredientModel",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "caloriesPerUnit",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "image",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ingredient",
+            "otherEntityRelationshipName": "ingredientModel",
+            "relationshipName": "ingredient"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "unitType",
+            "otherEntityRelationshipName": "ingredientModels",
+            "relationshipName": "unitTypes",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "ingredientType",
+            "otherEntityRelationshipName": "ingredientModels",
+            "relationshipName": "ingredientTypes",
+            "otherEntityField": "name",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20200510170700",
+    "entityTableName": "ingredient_model",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

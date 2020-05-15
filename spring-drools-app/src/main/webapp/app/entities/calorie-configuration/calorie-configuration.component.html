@@ -1,0 +1,79 @@
+<div>
+    <h2 id="page-heading">
+        <span>Calorie Configurations</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-calorie-configuration" [routerLink]="['/calorie-configuration/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span>
+            Create a new Calorie Configuration
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="calorieConfigurations?.length === 0">
+        <span>No calorieConfigurations found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="calorieConfigurations?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr>
+                    <th scope="col" ><span>ID</span></th>
+                    <th scope="col" ><span>Breakfast Low</span></th>
+                    <th scope="col" ><span>Breakfast High</span></th>
+                    <th scope="col" ><span>Lunch Low</span></th>
+                    <th scope="col" ><span>Lunch High</span></th>
+                    <th scope="col" ><span>Dinner Low</span></th>
+                    <th scope="col" ><span>Dinner High</span></th>
+                    <th scope="col" ><span>Snack Low</span></th>
+                    <th scope="col" ><span>Snack High</span></th>
+                    <th scope="col" ><span>User</span></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let calorieConfiguration of calorieConfigurations ;trackBy: trackId">
+                    <td><a [routerLink]="['/calorie-configuration', calorieConfiguration.id, 'view']">{{ calorieConfiguration.id }}</a></td>
+                    <td>{{ calorieConfiguration.breakfastLow }}</td>
+                    <td>{{ calorieConfiguration.breakfastHigh }}</td>
+                    <td>{{ calorieConfiguration.lunchLow }}</td>
+                    <td>{{ calorieConfiguration.lunchHigh }}</td>
+                    <td>{{ calorieConfiguration.dinnerLow }}</td>
+                    <td>{{ calorieConfiguration.dinnerHigh }}</td>
+                    <td>{{ calorieConfiguration.snackLow }}</td>
+                    <td>{{ calorieConfiguration.snackHigh }}</td>
+                    <td>
+                        {{ calorieConfiguration.userLogin }}
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/calorie-configuration', calorieConfiguration.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/calorie-configuration', calorieConfiguration.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(calorieConfiguration)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
