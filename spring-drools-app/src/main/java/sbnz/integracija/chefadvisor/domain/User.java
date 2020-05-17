@@ -109,15 +109,15 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "fridge", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<Ingredient> ingredients;
+    // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // @JoinTable(name = "ingredient", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
+    // @Fetch(value = FetchMode.SUBSELECT)
+    // private List<Ingredient> ingredients;
     
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "history", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"))
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<Ingredient> pastMeals;
+    // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // @JoinTable(name = "dish", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"))
+    // @Fetch(value = FetchMode.SUBSELECT)
+    // private List<Ingredient> pastMeals;
 
 
     public Long getId() {
