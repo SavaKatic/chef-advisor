@@ -1,14 +1,27 @@
 package sbnz.integracija.chefadvisor.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.transaction.Transactional;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory;
 
@@ -18,6 +31,7 @@ import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory;
 @Entity
 @Table(name = "dish")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Transactional
 public class Dish implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,14 +65,14 @@ public class Dish implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Rating> ratings = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "dish_types",
                joinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "types_id", referencedColumnName = "id"))
     private Set<DishType> types = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "dish_users",
                joinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"),
