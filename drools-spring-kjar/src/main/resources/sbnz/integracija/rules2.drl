@@ -1,6 +1,6 @@
 package sbnz.integracija;
 
-import sbnz.integracija.example.facts.Item;
+import sbnz.integracija.chefadvisor.facts.Item;
 
 rule "Classify Item - High Range"
     when
