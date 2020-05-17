@@ -25,6 +25,7 @@
                     <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="name"><span>Name</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="caloriesPerUnit"><span>Calories Per Unit</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="unitTypeName"><span>Unit Type</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -33,6 +34,11 @@
                     <td><a [routerLink]="['/ingredient-model', ingredientModel.id, 'view']">{{ ingredientModel.id }}</a></td>
                     <td>{{ ingredientModel.name }}</td>
                     <td>{{ ingredientModel.caloriesPerUnit }}</td>
+                    <td>
+                        <div *ngIf="ingredientModel.unitTypeId">
+                            <a [routerLink]="['/unit-type', ingredientModel.unitTypeId , 'view']" >{{ ingredientModel.unitTypeName }}</a>
+                        </div>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

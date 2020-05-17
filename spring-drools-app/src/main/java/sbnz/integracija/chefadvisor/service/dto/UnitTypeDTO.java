@@ -12,6 +12,8 @@ public class UnitTypeDTO implements Serializable {
 
     private String name;
 
+    private Double value;
+
     
     public Long getId() {
         return id;
@@ -27,6 +29,14 @@ public class UnitTypeDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Double getValue() {
+        return value;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
     }
 
     @Override
@@ -55,6 +65,7 @@ public class UnitTypeDTO implements Serializable {
         return "UnitTypeDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", value=" + getValue() +
             "}";
     }
 }

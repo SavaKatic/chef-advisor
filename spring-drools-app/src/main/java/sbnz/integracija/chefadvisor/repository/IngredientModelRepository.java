@@ -17,13 +17,13 @@ import java.util.Optional;
 @Repository
 public interface IngredientModelRepository extends JpaRepository<IngredientModel, Long> {
 
-    @Query(value = "select distinct ingredientModel from IngredientModel ingredientModel left join fetch ingredientModel.unitTypes left join fetch ingredientModel.ingredientTypes",
+    @Query(value = "select distinct ingredientModel from IngredientModel ingredientModel left join fetch ingredientModel.ingredientTypes",
         countQuery = "select count(distinct ingredientModel) from IngredientModel ingredientModel")
     Page<IngredientModel> findAllWithEagerRelationships(Pageable pageable);
 
-    @Query("select distinct ingredientModel from IngredientModel ingredientModel left join fetch ingredientModel.unitTypes left join fetch ingredientModel.ingredientTypes")
+    @Query("select distinct ingredientModel from IngredientModel ingredientModel left join fetch ingredientModel.ingredientTypes")
     List<IngredientModel> findAllWithEagerRelationships();
 
-    @Query("select ingredientModel from IngredientModel ingredientModel left join fetch ingredientModel.unitTypes left join fetch ingredientModel.ingredientTypes where ingredientModel.id =:id")
+    @Query("select ingredientModel from IngredientModel ingredientModel left join fetch ingredientModel.ingredientTypes where ingredientModel.id =:id")
     Optional<IngredientModel> findOneWithEagerRelationships(@Param("id") Long id);
 }

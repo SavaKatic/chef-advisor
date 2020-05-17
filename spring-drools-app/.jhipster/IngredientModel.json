@@ -19,19 +19,18 @@
         },
         {
             "relationshipType": "many-to-many",
-            "otherEntityName": "unitType",
-            "otherEntityRelationshipName": "ingredientModels",
-            "relationshipName": "unitTypes",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
             "otherEntityName": "ingredientType",
             "otherEntityRelationshipName": "ingredientModels",
             "relationshipName": "ingredientTypes",
             "otherEntityField": "name",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "unitType",
+            "otherEntityRelationshipName": "ingredientModel",
+            "relationshipName": "unitType",
+            "otherEntityField": "name"
         }
     ],
     "changelogDate": "20200510170700",

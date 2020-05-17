@@ -4,16 +4,18 @@
         {
             "fieldName": "name",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "value",
+            "fieldType": "Double"
         }
     ],
     "relationships": [
         {
-            "relationshipType": "many-to-many",
+            "relationshipType": "one-to-many",
             "otherEntityName": "ingredientModel",
-            "otherEntityRelationshipName": "unitTypes",
-            "relationshipName": "ingredientModels",
-            "otherEntityField": "name",
-            "ownerSide": false
+            "otherEntityRelationshipName": "unitType",
+            "relationshipName": "ingredientModel"
         }
     ],
     "changelogDate": "20200510170600",

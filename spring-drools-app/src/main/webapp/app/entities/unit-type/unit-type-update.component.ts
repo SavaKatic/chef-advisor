@@ -17,7 +17,8 @@ export class UnitTypeUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    name: []
+    name: [],
+    value: []
   });
 
   constructor(protected unitTypeService: UnitTypeService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -31,7 +32,8 @@ export class UnitTypeUpdateComponent implements OnInit {
   updateForm(unitType: IUnitType): void {
     this.editForm.patchValue({
       id: unitType.id,
-      name: unitType.name
+      name: unitType.name,
+      value: unitType.value
     });
   }
 
@@ -53,7 +55,8 @@ export class UnitTypeUpdateComponent implements OnInit {
     return {
       ...new UnitType(),
       id: this.editForm.get(['id'])!.value,
-      name: this.editForm.get(['name'])!.value
+      name: this.editForm.get(['name'])!.value,
+      value: this.editForm.get(['value'])!.value
     };
   }
 

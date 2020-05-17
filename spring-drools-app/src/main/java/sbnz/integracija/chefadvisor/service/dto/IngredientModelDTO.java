@@ -16,8 +16,11 @@ public class IngredientModelDTO implements Serializable {
 
     private Double caloriesPerUnit;
 
-    private Set<UnitTypeDTO> unitTypes = new HashSet<>();
     private Set<IngredientTypeDTO> ingredientTypes = new HashSet<>();
+
+    private Long unitTypeId;
+
+    private String unitTypeName;
     
     public Long getId() {
         return id;
@@ -43,20 +46,28 @@ public class IngredientModelDTO implements Serializable {
         this.caloriesPerUnit = caloriesPerUnit;
     }
 
-    public Set<UnitTypeDTO> getUnitTypes() {
-        return unitTypes;
-    }
-
-    public void setUnitTypes(Set<UnitTypeDTO> unitTypes) {
-        this.unitTypes = unitTypes;
-    }
-
     public Set<IngredientTypeDTO> getIngredientTypes() {
         return ingredientTypes;
     }
 
     public void setIngredientTypes(Set<IngredientTypeDTO> ingredientTypes) {
         this.ingredientTypes = ingredientTypes;
+    }
+
+    public Long getUnitTypeId() {
+        return unitTypeId;
+    }
+
+    public void setUnitTypeId(Long unitTypeId) {
+        this.unitTypeId = unitTypeId;
+    }
+
+    public String getUnitTypeName() {
+        return unitTypeName;
+    }
+
+    public void setUnitTypeName(String unitTypeName) {
+        this.unitTypeName = unitTypeName;
     }
 
     @Override
@@ -86,8 +97,9 @@ public class IngredientModelDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", caloriesPerUnit=" + getCaloriesPerUnit() +
-            ", unitTypes='" + getUnitTypes() + "'" +
             ", ingredientTypes='" + getIngredientTypes() + "'" +
+            ", unitTypeId=" + getUnitTypeId() +
+            ", unitTypeName='" + getUnitTypeName() + "'" +
             "}";
     }
 }

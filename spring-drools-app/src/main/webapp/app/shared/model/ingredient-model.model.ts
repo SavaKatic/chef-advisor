@@ -1,5 +1,4 @@
 import { IIngredient } from 'app/shared/model/ingredient.model';
-import { IUnitType } from 'app/shared/model/unit-type.model';
 import { IIngredientType } from 'app/shared/model/ingredient-type.model';
 
 export interface IIngredientModel {
@@ -7,8 +6,9 @@ export interface IIngredientModel {
   name?: string;
   caloriesPerUnit?: number;
   ingredients?: IIngredient[];
-  unitTypes?: IUnitType[];
   ingredientTypes?: IIngredientType[];
+  unitTypeName?: string;
+  unitTypeId?: number;
 }
 
 export class IngredientModel implements IIngredientModel {
@@ -17,7 +17,8 @@ export class IngredientModel implements IIngredientModel {
     public name?: string,
     public caloriesPerUnit?: number,
     public ingredients?: IIngredient[],
-    public unitTypes?: IUnitType[],
-    public ingredientTypes?: IIngredientType[]
+    public ingredientTypes?: IIngredientType[],
+    public unitTypeName?: string,
+    public unitTypeId?: number
   ) {}
 }

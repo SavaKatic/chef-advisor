@@ -123,4 +123,8 @@ public class Ingredient implements Serializable {
             ", amount=" + getAmount() +
             "}";
     }
+
+    public void increaseAmount() {
+      this.amount += this.ingredientModel.getUnitType().getValue();
+    }
 }

@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
 
 import { IIngredientModel, IngredientModel } from 'app/shared/model/ingredient-model.model';
 import { IngredientModelService } from './ingredient-model.service';
-import { IUnitType } from 'app/shared/model/unit-type.model';
-import { UnitTypeService } from 'app/entities/unit-type/unit-type.service';
 import { IIngredientType } from 'app/shared/model/ingredient-type.model';
 import { IngredientTypeService } from 'app/entities/ingredient-type/ingredient-type.service';
+import { IUnitType } from 'app/shared/model/unit-type.model';
+import { UnitTypeService } from 'app/entities/unit-type/unit-type.service';
 
-type SelectableEntity = IUnitType | IIngredientType;
+type SelectableEntity = IIngredientType | IUnitType;
 
 @Component({
   selector: 'jhi-ingredient-model-update',
@@ -20,21 +20,21 @@ type SelectableEntity = IUnitType | IIngredientType;
 })
 export class IngredientModelUpdateComponent implements OnInit {
   isSaving = false;
-  unittypes: IUnitType[] = [];
   ingredienttypes: IIngredientType[] = [];
+  unittypes: IUnitType[] = [];
 
   editForm = this.fb.group({
     id: [],
     name: [],
     caloriesPerUnit: [],
-    unitTypes: [],
-    ingredientTypes: []
+    ingredientTypes: [],
+    unitTypeId: []
   });
 
   constructor(
     protected ingredientModelService: IngredientModelService,
-    protected unitTypeService: UnitTypeService,
     protected ingredientTypeService: IngredientTypeService,
+    protected unitTypeService: UnitTypeService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -43,9 +43,9 @@ export class IngredientModelUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ ingredientModel }) => {
       this.updateForm(ingredientModel);
 
-      this.unitTypeService.query().subscribe((res: HttpResponse<IUnitType[]>) => (this.unittypes = res.body || []));
-
       this.ingredientTypeService.query().subscribe((res: HttpResponse<IIngredientType[]>) => (this.ingredienttypes = res.body || []));
+
+      this.unitTypeService.query().subscribe((res: HttpResponse<IUnitType[]>) => (this.unittypes = res.body || []));
     });
   }
 
@@ -54,8 +54,8 @@ export class IngredientModelUpdateComponent implements OnInit {
       id: ingredientModel.id,
       name: ingredientModel.name,
       caloriesPerUnit: ingredientModel.caloriesPerUnit,
-      unitTypes: ingredientModel.unitTypes,
-      ingredientTypes: ingredientModel.ingredientTypes
+      ingredientTypes: ingredientModel.ingredientTypes,
+      unitTypeId: ingredientModel.unitTypeId
     });
   }
 
@@ -79,8 +79,8 @@ export class IngredientModelUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       caloriesPerUnit: this.editForm.get(['caloriesPerUnit'])!.value,
-      unitTypes: this.editForm.get(['unitTypes'])!.value,
-      ingredientTypes: this.editForm.get(['ingredientTypes'])!.value
+      ingredientTypes: this.editForm.get(['ingredientTypes'])!.value,
+      unitTypeId: this.editForm.get(['unitTypeId'])!.value
     };
   }
 
@@ -104,7 +104,7 @@ export class IngredientModelUpdateComponent implements OnInit {
     return item.id;
   }
 
-  getSelected(selectedVals: SelectableEntity[], option: SelectableEntity): SelectableEntity {
+  getSelected(selectedVals: IIngredientType[], option: IIngredientType): IIngredientType {
     if (selectedVals) {
       for (let i = 0; i < selectedVals.length; i++) {
         if (option.id === selectedVals[i].id) {

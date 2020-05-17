@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(UnitTypeService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new UnitType(0, 'AAAAAAA');
+      elemDefault = new UnitType(0, 'AAAAAAA', 0);
     });
 
     describe('Service methods', () => {
@@ -54,7 +54,8 @@ describe('Service Tests', () => {
       it('should update a UnitType', () => {
         const returnedFromService = Object.assign(
           {
-            name: 'BBBBBB'
+            name: 'BBBBBB',
+            value: 1
           },
           elemDefault
         );
@@ -71,7 +72,8 @@ describe('Service Tests', () => {
       it('should return a list of UnitType', () => {
         const returnedFromService = Object.assign(
           {
-            name: 'BBBBBB'
+            name: 'BBBBBB',
+            value: 1
           },
           elemDefault
         );

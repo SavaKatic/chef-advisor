@@ -13,7 +13,8 @@ entity IngredientType {
 }
 
 entity UnitType {
-	name String
+	name String,
+    value Double
 }
 
 entity IngredientModel {
@@ -51,8 +52,6 @@ enum DishCategory {
 
 relationship ManyToMany {
     Dish{types(name)} to DishType{dishes(name)}
-    IngredientModel{unitTypes(name)} to 
-    UnitType{ingredientModels(name)}
     IngredientModel{ingredientTypes(name)} to 
     IngredientType{ingredientModels(name)}
     Dish{users(login)} to User{dishes(name)}
@@ -62,6 +61,7 @@ relationship OneToMany {
 	IngredientModel to Ingredient{ingredientModel(name)} 
   Dish to Ingredient{dish(name)}
   Dish to Rating{dish(name)}
+  UnitType to IngredientModel{unitType(name)}
 }
 
 relationship ManyToOne {

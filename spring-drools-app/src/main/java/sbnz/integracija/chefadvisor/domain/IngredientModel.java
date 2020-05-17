@@ -1,5 +1,6 @@
 package sbnz.integracija.chefadvisor.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -36,17 +37,14 @@ public class IngredientModel implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "ingredient_model_unit_types",
-               joinColumns = @JoinColumn(name = "ingredient_model_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "unit_types_id", referencedColumnName = "id"))
-    private Set<UnitType> unitTypes = new HashSet<>();
-
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "ingredient_model_ingredient_types",
                joinColumns = @JoinColumn(name = "ingredient_model_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "ingredient_types_id", referencedColumnName = "id"))
     private Set<IngredientType> ingredientTypes = new HashSet<>();
+
+    @ManyToOne
+    @JsonIgnoreProperties("ingredientModels")
+    private UnitType unitType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -108,31 +106,6 @@ public class IngredientModel implements Serializable {
         this.ingredients = ingredients;
     }
 
-    public Set<UnitType> getUnitTypes() {
-        return unitTypes;
-    }
-
-    public IngredientModel unitTypes(Set<UnitType> unitTypes) {
-        this.unitTypes = unitTypes;
-        return this;
-    }
-
-    public IngredientModel addUnitTypes(UnitType unitType) {
-        this.unitTypes.add(unitType);
-        unitType.getIngredientModels().add(this);
-        return this;
-    }
-
-    public IngredientModel removeUnitTypes(UnitType unitType) {
-        this.unitTypes.remove(unitType);
-        unitType.getIngredientModels().remove(this);
-        return this;
-    }
-
-    public void setUnitTypes(Set<UnitType> unitTypes) {
-        this.unitTypes = unitTypes;
-    }
-
     public Set<IngredientType> getIngredientTypes() {
         return ingredientTypes;
     }
@@ -156,6 +129,19 @@ public class IngredientModel implements Serializable {
 
     public void setIngredientTypes(Set<IngredientType> ingredientTypes) {
         this.ingredientTypes = ingredientTypes;
+    }
+
+    public UnitType getUnitType() {
+        return unitType;
+    }
+
+    public IngredientModel unitType(UnitType unitType) {
+        this.unitType = unitType;
+        return this;
+    }
+
+    public void setUnitType(UnitType unitType) {
+        this.unitType = unitType;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

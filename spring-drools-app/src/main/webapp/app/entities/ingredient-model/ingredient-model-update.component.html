@@ -24,16 +24,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="field_unitTypes">Unit Types</label>
-                    <select class="form-control" id="field_unitTypes" multiple name="unitTypes" formControlName="unitTypes">
-                        <option [ngValue]="getSelected(editForm.get('unitTypes')!.value, unitTypeOption)" *ngFor="let unitTypeOption of unittypes; trackBy: trackById">{{ unitTypeOption.name }}</option>
+                    <label for="field_ingredientTypes">Ingredient Types</label>
+                    <select class="form-control" id="field_ingredientTypes" multiple name="ingredientTypes" formControlName="ingredientTypes">
+                        <option [ngValue]="getSelected(editForm.get('ingredientTypes')!.value, ingredientTypeOption)" *ngFor="let ingredientTypeOption of ingredienttypes; trackBy: trackById">{{ ingredientTypeOption.name }}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="field_ingredientTypes">Ingredient Types</label>
-                    <select class="form-control" id="field_ingredientTypes" multiple name="ingredientTypes" formControlName="ingredientTypes">
-                        <option [ngValue]="getSelected(editForm.get('ingredientTypes')!.value, ingredientTypeOption)" *ngFor="let ingredientTypeOption of ingredienttypes; trackBy: trackById">{{ ingredientTypeOption.name }}</option>
+                    <label class="form-control-label" for="field_unitType">Unit Type</label>
+                    <select class="form-control" id="field_unitType" name="unitType" formControlName="unitTypeId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="unitTypeOption.id" *ngFor="let unitTypeOption of unittypes; trackBy: trackById">{{ unitTypeOption.name }}</option>
                     </select>
                 </div>
             </div>

@@ -16,17 +16,17 @@
                 <dd>
                     <span>{{ ingredientModel.caloriesPerUnit }}</span>
                 </dd>
-                <dt><span>Unit Types</span></dt>
-                <dd>
-                    <span *ngFor="let unitTypes of ingredientModel.unitTypes; let last = last">
-                        <a [routerLink]="['/unit-type', unitTypes?.id, 'view']">{{ unitTypes.name }}</a>{{ last ? '' : ', ' }}
-                    </span>
-                </dd>
                 <dt><span>Ingredient Types</span></dt>
                 <dd>
                     <span *ngFor="let ingredientTypes of ingredientModel.ingredientTypes; let last = last">
                         <a [routerLink]="['/ingredient-type', ingredientTypes?.id, 'view']">{{ ingredientTypes.name }}</a>{{ last ? '' : ', ' }}
                     </span>
+                </dd>
+                <dt><span>Unit Type</span></dt>
+                <dd>
+                    <div *ngIf="ingredientModel.unitTypeId">
+                        <a [routerLink]="['/unit-type', ingredientModel.unitTypeId, 'view']">{{ ingredientModel.unitTypeName }}</a>
+                    </div>
                 </dd>
             </dl>
 

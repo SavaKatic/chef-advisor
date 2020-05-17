@@ -14,7 +14,7 @@ public interface UnitTypeMapper extends EntityMapper<UnitTypeDTO, UnitType> {
 
 
     @Mapping(target = "ingredientModels", ignore = true)
-    @Mapping(target = "removeIngredientModels", ignore = true)
+    @Mapping(target = "removeIngredientModel", ignore = true)
     UnitType toEntity(UnitTypeDTO unitTypeDTO);
 
     default UnitType fromId(Long id) {

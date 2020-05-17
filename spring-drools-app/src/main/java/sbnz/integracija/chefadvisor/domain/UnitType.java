@@ -1,6 +1,5 @@
 package sbnz.integracija.chefadvisor.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -28,9 +27,11 @@ public class UnitType implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "unitTypes")
+    @Column(name = "value")
+    private Double value;
+
+    @OneToMany(mappedBy = "unitType")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonIgnore
     private Set<IngredientModel> ingredientModels = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -55,6 +56,19 @@ public class UnitType implements Serializable {
         this.name = name;
     }
 
+    public Double getValue() {
+        return value;
+    }
+
+    public UnitType value(Double value) {
+        this.value = value;
+        return this;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
     public Set<IngredientModel> getIngredientModels() {
         return ingredientModels;
     }
@@ -64,15 +78,15 @@ public class UnitType implements Serializable {
         return this;
     }
 
-    public UnitType addIngredientModels(IngredientModel ingredientModel) {
+    public UnitType addIngredientModel(IngredientModel ingredientModel) {
         this.ingredientModels.add(ingredientModel);
-        ingredientModel.getUnitTypes().add(this);
+        ingredientModel.setUnitType(this);
         return this;
     }
 
-    public UnitType removeIngredientModels(IngredientModel ingredientModel) {
+    public UnitType removeIngredientModel(IngredientModel ingredientModel) {
         this.ingredientModels.remove(ingredientModel);
-        ingredientModel.getUnitTypes().remove(this);
+        ingredientModel.setUnitType(null);
         return this;
     }
 
@@ -102,6 +116,7 @@ public class UnitType implements Serializable {
         return "UnitType{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", value=" + getValue() +
             "}";
     }
 }

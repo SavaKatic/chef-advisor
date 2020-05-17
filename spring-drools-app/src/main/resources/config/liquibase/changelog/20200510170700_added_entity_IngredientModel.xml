@@ -22,23 +22,15 @@
             <column name="calories_per_unit" type="double">
                 <constraints nullable="true" />
             </column>
+            <column name="unit_type_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
     </changeSet>
 
     <changeSet id="20200510170700-1-relations" author="jhipster">
 
-        <createTable tableName="ingredient_model_unit_types">
-            <column name="unit_types_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ingredient_model_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="ingredient_model_id, unit_types_id" tableName="ingredient_model_unit_types"/>
-        
         <createTable tableName="ingredient_model_ingredient_types">
             <column name="ingredient_types_id" type="bigint">
                 <constraints nullable="false"/>

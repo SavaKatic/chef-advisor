@@ -265,4 +265,18 @@ public class Dish implements Serializable {
             ", description='" + getDescription() + "'" +
             "}";
     }
+
+    public Double getCalories() {
+      double calories = 0;
+      for(Ingredient i: this.ingredients) {
+        calories += i.getIngredientModel().getCaloriesPerUnit() * i.getAmount();
+      }
+      return calories;
+    }
+    
+    public void increaseIngredients() {
+      for(Ingredient i: this.ingredients) {
+        i.increaseAmount();
+      }
+    }
 }
