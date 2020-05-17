@@ -22,6 +22,8 @@ public class DishDTO implements Serializable {
     private byte[] image;
 
     private String imageContentType;
+    private String description;
+
     private Set<DishTypeDTO> types = new HashSet<>();
     private Set<UserDTO> users = new HashSet<>();
     
@@ -63,6 +65,14 @@ public class DishDTO implements Serializable {
 
     public void setImageContentType(String imageContentType) {
         this.imageContentType = imageContentType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Set<DishTypeDTO> getTypes() {
@@ -109,6 +119,7 @@ public class DishDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", category='" + getCategory() + "'" +
             ", image='" + getImage() + "'" +
+            ", description='" + getDescription() + "'" +
             ", types='" + getTypes() + "'" +
             ", users='" + getUsers() + "'" +
             "}";

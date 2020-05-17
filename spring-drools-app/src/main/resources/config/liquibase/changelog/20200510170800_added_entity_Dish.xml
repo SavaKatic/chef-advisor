@@ -28,6 +28,9 @@
             <column name="image_content_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
     </changeSet>
@@ -67,9 +70,9 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20200510170800-1-data" author="jhipster">
+    <changeSet id="20200510170800-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/data/dish.csv"
+                  file="config/liquibase/fake-data/dish.csv"
                   separator=";"
                   tableName="dish">
             <column name="id" type="numeric"/>
@@ -77,14 +80,7 @@
             <column name="category" type="string"/>
             <column name="image" type="blob"/>
             <column name="image_content_type" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
-        </loadData>
-         <loadData
-                  file="config/liquibase/data/dish_types.csv"
-                  separator=";"
-                  tableName="dish_types">
-            <column name="types_id" type="numeric"/>
-            <column name="dish_id" type="numeric"/>
+            <column name="description" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

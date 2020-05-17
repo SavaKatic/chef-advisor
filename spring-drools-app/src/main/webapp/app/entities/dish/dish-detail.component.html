@@ -23,6 +23,10 @@
                         {{ dish.imageContentType }}, {{ byteSize(dish.image) }}
                     </div>
                 </dd>
+                <dt><span>Description</span></dt>
+                <dd>
+                    <span>{{ dish.description }}</span>
+                </dd>
                 <dt><span>Types</span></dt>
                 <dd>
                     <span *ngFor="let types of dish.types; let last = last">

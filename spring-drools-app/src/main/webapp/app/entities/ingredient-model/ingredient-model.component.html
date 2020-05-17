@@ -25,7 +25,6 @@
                     <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="name"><span>Name</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="caloriesPerUnit"><span>Calories Per Unit</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="image"><span>Image</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -34,10 +33,6 @@
                     <td><a [routerLink]="['/ingredient-model', ingredientModel.id, 'view']">{{ ingredientModel.id }}</a></td>
                     <td>{{ ingredientModel.name }}</td>
                     <td>{{ ingredientModel.caloriesPerUnit }}</td>
-                    <td>
-                        <a *ngIf="ingredientModel.image" (click)="openFile(ingredientModel.imageContentType, ingredientModel.image)">open</a>
-                        <span *ngIf="ingredientModel.image">{{ ingredientModel.imageContentType }}, {{ byteSize(ingredientModel.image) }}</span>
-                    </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

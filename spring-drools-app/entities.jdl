@@ -18,14 +18,14 @@ entity UnitType {
 
 entity IngredientModel {
 	name String,
-    caloriesPerUnit Double,
-    image Blob
+    caloriesPerUnit Double
 }
 
 entity Dish {
 	name String,
     category DishCategory,
-    image Blob
+    image Blob,
+    description String
 }
 
 entity CalorieConfiguration {

@@ -21,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(DishService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Dish(0, 'AAAAAAA', DishCategory.BREAKFAST, 'image/png', 'AAAAAAA');
+      elemDefault = new Dish(0, 'AAAAAAA', DishCategory.BREAKFAST, 'image/png', 'AAAAAAA', 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -57,7 +57,8 @@ describe('Service Tests', () => {
           {
             name: 'BBBBBB',
             category: 'BBBBBB',
-            image: 'BBBBBB'
+            image: 'BBBBBB',
+            description: 'BBBBBB'
           },
           elemDefault
         );
@@ -76,7 +77,8 @@ describe('Service Tests', () => {
           {
             name: 'BBBBBB',
             category: 'BBBBBB',
-            image: 'BBBBBB'
+            image: 'BBBBBB',
+            description: 'BBBBBB'
           },
           elemDefault
         );

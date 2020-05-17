@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link sbnz.integracija.chefadvisor.domain.IngredientModel} entity.
@@ -17,10 +16,6 @@ public class IngredientModelDTO implements Serializable {
 
     private Double caloriesPerUnit;
 
-    @Lob
-    private byte[] image;
-
-    private String imageContentType;
     private Set<UnitTypeDTO> unitTypes = new HashSet<>();
     private Set<IngredientTypeDTO> ingredientTypes = new HashSet<>();
     
@@ -46,22 +41,6 @@ public class IngredientModelDTO implements Serializable {
 
     public void setCaloriesPerUnit(Double caloriesPerUnit) {
         this.caloriesPerUnit = caloriesPerUnit;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public String getImageContentType() {
-        return imageContentType;
-    }
-
-    public void setImageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
     }
 
     public Set<UnitTypeDTO> getUnitTypes() {
@@ -107,7 +86,6 @@ public class IngredientModelDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", caloriesPerUnit=" + getCaloriesPerUnit() +
-            ", image='" + getImage() + "'" +
             ", unitTypes='" + getUnitTypes() + "'" +
             ", ingredientTypes='" + getIngredientTypes() + "'" +
             "}";

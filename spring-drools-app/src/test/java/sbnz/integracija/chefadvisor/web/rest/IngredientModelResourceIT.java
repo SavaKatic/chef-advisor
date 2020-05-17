@@ -21,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +45,6 @@ public class IngredientModelResourceIT {
 
     private static final Double DEFAULT_CALORIES_PER_UNIT = 1D;
     private static final Double UPDATED_CALORIES_PER_UNIT = 2D;
-
-    private static final byte[] DEFAULT_IMAGE = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_IMAGE = TestUtil.createByteArray(1, "1");
-    private static final String DEFAULT_IMAGE_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_IMAGE_CONTENT_TYPE = "image/png";
 
     @Autowired
     private IngredientModelRepository ingredientModelRepository;
@@ -84,9 +78,7 @@ public class IngredientModelResourceIT {
     public static IngredientModel createEntity(EntityManager em) {
         IngredientModel ingredientModel = new IngredientModel()
             .name(DEFAULT_NAME)
-            .caloriesPerUnit(DEFAULT_CALORIES_PER_UNIT)
-            .image(DEFAULT_IMAGE)
-            .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE);
+            .caloriesPerUnit(DEFAULT_CALORIES_PER_UNIT);
         return ingredientModel;
     }
     /**
@@ -98,9 +90,7 @@ public class IngredientModelResourceIT {
     public static IngredientModel createUpdatedEntity(EntityManager em) {
         IngredientModel ingredientModel = new IngredientModel()
             .name(UPDATED_NAME)
-            .caloriesPerUnit(UPDATED_CALORIES_PER_UNIT)
-            .image(UPDATED_IMAGE)
-            .imageContentType(UPDATED_IMAGE_CONTENT_TYPE);
+            .caloriesPerUnit(UPDATED_CALORIES_PER_UNIT);
         return ingredientModel;
     }
 
@@ -127,8 +117,6 @@ public class IngredientModelResourceIT {
         IngredientModel testIngredientModel = ingredientModelList.get(ingredientModelList.size() - 1);
         assertThat(testIngredientModel.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testIngredientModel.getCaloriesPerUnit()).isEqualTo(DEFAULT_CALORIES_PER_UNIT);
-        assertThat(testIngredientModel.getImage()).isEqualTo(DEFAULT_IMAGE);
-        assertThat(testIngredientModel.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
     }
 
     @Test
@@ -164,9 +152,7 @@ public class IngredientModelResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(ingredientModel.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].caloriesPerUnit").value(hasItem(DEFAULT_CALORIES_PER_UNIT.doubleValue())))
-            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))));
+            .andExpect(jsonPath("$.[*].caloriesPerUnit").value(hasItem(DEFAULT_CALORIES_PER_UNIT.doubleValue())));
     }
     
     @SuppressWarnings({"unchecked"})
@@ -201,9 +187,7 @@ public class IngredientModelResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(ingredientModel.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.caloriesPerUnit").value(DEFAULT_CALORIES_PER_UNIT.doubleValue()))
-            .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
-            .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)));
+            .andExpect(jsonPath("$.caloriesPerUnit").value(DEFAULT_CALORIES_PER_UNIT.doubleValue()));
     }
 
     @Test
@@ -228,9 +212,7 @@ public class IngredientModelResourceIT {
         em.detach(updatedIngredientModel);
         updatedIngredientModel
             .name(UPDATED_NAME)
-            .caloriesPerUnit(UPDATED_CALORIES_PER_UNIT)
-            .image(UPDATED_IMAGE)
-            .imageContentType(UPDATED_IMAGE_CONTENT_TYPE);
+            .caloriesPerUnit(UPDATED_CALORIES_PER_UNIT);
         IngredientModelDTO ingredientModelDTO = ingredientModelMapper.toDto(updatedIngredientModel);
 
         restIngredientModelMockMvc.perform(put("/api/ingredient-models")
@@ -244,8 +226,6 @@ public class IngredientModelResourceIT {
         IngredientModel testIngredientModel = ingredientModelList.get(ingredientModelList.size() - 1);
         assertThat(testIngredientModel.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testIngredientModel.getCaloriesPerUnit()).isEqualTo(UPDATED_CALORIES_PER_UNIT);
-        assertThat(testIngredientModel.getImage()).isEqualTo(UPDATED_IMAGE);
-        assertThat(testIngredientModel.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
     }
 
     @Test

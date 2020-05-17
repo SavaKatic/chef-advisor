@@ -40,6 +40,9 @@ public class Dish implements Serializable {
     @Column(name = "image_content_type")
     private String imageContentType;
 
+    @Column(name = "description")
+    private String description;
+
     @OneToMany(mappedBy = "dish")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Ingredient> ingredients = new HashSet<>();
@@ -121,6 +124,19 @@ public class Dish implements Serializable {
 
     public void setImageContentType(String imageContentType) {
         this.imageContentType = imageContentType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Dish description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Set<Ingredient> getIngredients() {
@@ -246,6 +262,7 @@ public class Dish implements Serializable {
             ", category='" + getCategory() + "'" +
             ", image='" + getImage() + "'" +
             ", imageContentType='" + getImageContentType() + "'" +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 }

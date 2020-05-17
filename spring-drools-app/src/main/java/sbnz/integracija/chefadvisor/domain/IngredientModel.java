@@ -30,13 +30,6 @@ public class IngredientModel implements Serializable {
     @Column(name = "calories_per_unit")
     private Double caloriesPerUnit;
 
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
-
-    @Column(name = "image_content_type")
-    private String imageContentType;
-
     @OneToMany(mappedBy = "ingredientModel")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Ingredient> ingredients = new HashSet<>();
@@ -88,32 +81,6 @@ public class IngredientModel implements Serializable {
 
     public void setCaloriesPerUnit(Double caloriesPerUnit) {
         this.caloriesPerUnit = caloriesPerUnit;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public IngredientModel image(byte[] image) {
-        this.image = image;
-        return this;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public String getImageContentType() {
-        return imageContentType;
-    }
-
-    public IngredientModel imageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
-        return this;
-    }
-
-    public void setImageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
     }
 
     public Set<Ingredient> getIngredients() {
@@ -214,8 +181,6 @@ public class IngredientModel implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", caloriesPerUnit=" + getCaloriesPerUnit() +
-            ", image='" + getImage() + "'" +
-            ", imageContentType='" + getImageContentType() + "'" +
             "}";
     }
 }

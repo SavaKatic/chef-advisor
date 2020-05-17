@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(IngredientModelService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new IngredientModel(0, 'AAAAAAA', 0, 'image/png', 'AAAAAAA');
+      elemDefault = new IngredientModel(0, 'AAAAAAA', 0);
     });
 
     describe('Service methods', () => {
@@ -55,8 +55,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             name: 'BBBBBB',
-            caloriesPerUnit: 1,
-            image: 'BBBBBB'
+            caloriesPerUnit: 1
           },
           elemDefault
         );
@@ -74,8 +73,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             name: 'BBBBBB',
-            caloriesPerUnit: 1,
-            image: 'BBBBBB'
+            caloriesPerUnit: 1
           },
           elemDefault
         );

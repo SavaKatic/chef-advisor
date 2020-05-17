@@ -8,11 +8,6 @@
         {
             "fieldName": "caloriesPerUnit",
             "fieldType": "Double"
-        },
-        {
-            "fieldName": "image",
-            "fieldType": "byte[]",
-            "fieldTypeBlobContent": "any"
         }
     ],
     "relationships": [

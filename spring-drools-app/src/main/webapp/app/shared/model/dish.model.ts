@@ -10,6 +10,7 @@ export interface IDish {
   category?: DishCategory;
   imageContentType?: string;
   image?: any;
+  description?: string;
   ingredients?: IIngredient[];
   ratings?: IRating[];
   types?: IDishType[];
@@ -23,6 +24,7 @@ export class Dish implements IDish {
     public category?: DishCategory,
     public imageContentType?: string,
     public image?: any,
+    public description?: string,
     public ingredients?: IIngredient[],
     public ratings?: IRating[],
     public types?: IDishType[],

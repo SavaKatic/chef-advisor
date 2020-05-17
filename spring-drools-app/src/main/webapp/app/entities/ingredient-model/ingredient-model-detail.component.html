@@ -16,13 +16,6 @@
                 <dd>
                     <span>{{ ingredientModel.caloriesPerUnit }}</span>
                 </dd>
-                <dt><span>Image</span></dt>
-                <dd>
-                    <div *ngIf="ingredientModel.image">
-                        <a (click)="openFile(ingredientModel?.imageContentType!, ingredientModel?.image)">open</a>
-                        {{ ingredientModel.imageContentType }}, {{ byteSize(ingredientModel.image) }}
-                    </div>
-                </dd>
                 <dt><span>Unit Types</span></dt>
                 <dd>
                     <span *ngFor="let unitTypes of ingredientModel.unitTypes; let last = last">
