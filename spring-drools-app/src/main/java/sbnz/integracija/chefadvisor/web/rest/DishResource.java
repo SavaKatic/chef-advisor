@@ -102,8 +102,8 @@ public class DishResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
-    
-    /**
+
+        /**
      * {@code GET  /dishes} : get all the dishes that user made.
      *
      * @param pageable the pagination information.

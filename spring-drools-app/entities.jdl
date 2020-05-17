@@ -51,7 +51,6 @@ enum DishCategory {
 }
 
 relationship ManyToMany {
-    Dish{types(name)} to DishType{dishes(name)}
     IngredientModel{ingredientTypes(name)} to 
     IngredientType{ingredientModels(name)}
     Dish{users(login)} to User{dishes(name)}
@@ -60,6 +59,7 @@ relationship ManyToMany {
 relationship OneToMany {
 	IngredientModel to Ingredient{ingredientModel(name)} 
   Dish to Ingredient{dish(name)}
+  DishType to Dish{dishType(name)}
   Dish to Rating{dish(name)}
   UnitType to IngredientModel{unitType(name)}
 }

@@ -9,18 +9,6 @@
     <changeSet id="20200510170800-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="dish_id"
-                                 baseTableName="dish_types"
-                                 constraintName="fk_dish_types_dish_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="dish"/>
-
-        <addForeignKeyConstraint baseColumnNames="types_id"
-                                 baseTableName="dish_types"
-                                 constraintName="fk_dish_types_types_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="dish_type"/>
-        
-        <addForeignKeyConstraint baseColumnNames="dish_id"
                                  baseTableName="dish_users"
                                  constraintName="fk_dish_users_dish_id"
                                  referencedColumnNames="id"
@@ -32,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
         
+        <addForeignKeyConstraint baseColumnNames="dish_type_id"
+                                 baseTableName="dish"
+                                 constraintName="fk_dish_dish_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dish_type"/>
+
     </changeSet>
 </databaseChangeLog>

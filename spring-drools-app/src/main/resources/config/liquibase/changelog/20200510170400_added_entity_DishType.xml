@@ -21,8 +21,6 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
-        
     </changeSet>
 
     <changeSet id="20200510170400-1-relations" author="jhipster">

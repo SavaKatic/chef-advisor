@@ -18,14 +18,15 @@ public class DishDTO implements Serializable {
 
     private DishCategory category;
 
-    @Lob
-    private byte[] image;
+//    @Lob
+//    private byte[] image;
 
     private String imageContentType;
     private String description;
 
-    private Set<DishTypeDTO> types = new HashSet<>();
-    private Set<UserDTO> users = new HashSet<>();
+    private Long dishTypeId;
+
+    private String dishTypeName;
     
     public Long getId() {
         return id;
@@ -51,13 +52,13 @@ public class DishDTO implements Serializable {
         this.category = category;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
+//    public byte[] getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(byte[] image) {
+//        this.image = image;
+//    }
 
     public String getImageContentType() {
         return imageContentType;
@@ -75,20 +76,21 @@ public class DishDTO implements Serializable {
         this.description = description;
     }
 
-    public Set<DishTypeDTO> getTypes() {
-        return types;
+
+    public Long getDishTypeId() {
+        return dishTypeId;
     }
 
-    public void setTypes(Set<DishTypeDTO> dishTypes) {
-        this.types = dishTypes;
+    public void setDishTypeId(Long dishTypeId) {
+        this.dishTypeId = dishTypeId;
     }
 
-    public Set<UserDTO> getUsers() {
-        return users;
+    public String getDishTypeName() {
+        return dishTypeName;
     }
 
-    public void setUsers(Set<UserDTO> users) {
-        this.users = users;
+    public void setDishTypeName(String dishTypeName) {
+        this.dishTypeName = dishTypeName;
     }
 
     @Override
@@ -118,10 +120,10 @@ public class DishDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", category='" + getCategory() + "'" +
-            ", image='" + getImage() + "'" +
+//            ", image='" + getImage() + "'" +
             ", description='" + getDescription() + "'" +
-            ", types='" + getTypes() + "'" +
-            ", users='" + getUsers() + "'" +
+            ", dishTypeId=" + getDishTypeId() +
+            ", dishTypeName='" + getDishTypeName() + "'" +
             "}";
     }
 }

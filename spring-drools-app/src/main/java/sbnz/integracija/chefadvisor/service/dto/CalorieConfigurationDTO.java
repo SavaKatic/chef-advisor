@@ -3,6 +3,8 @@ package sbnz.integracija.chefadvisor.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+import sbnz.integracija.chefadvisor.domain.User;
+
 
 /**
  * A DTO for the {@link sbnz.integracija.chefadvisor.domain.CalorieConfiguration} entity.

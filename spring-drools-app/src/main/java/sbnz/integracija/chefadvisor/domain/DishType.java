@@ -1,6 +1,5 @@
 package sbnz.integracija.chefadvisor.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -28,9 +27,8 @@ public class DishType implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "types")
+    @OneToMany(mappedBy = "dishType")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonIgnore
     private Set<Dish> dishes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -64,15 +62,15 @@ public class DishType implements Serializable {
         return this;
     }
 
-    public DishType addDishes(Dish dish) {
+    public DishType addDish(Dish dish) {
         this.dishes.add(dish);
-        dish.getTypes().add(this);
+        dish.setDishType(this);
         return this;
     }
 
-    public DishType removeDishes(Dish dish) {
+    public DishType removeDish(Dish dish) {
         this.dishes.remove(dish);
-        dish.getTypes().remove(this);
+        dish.setDishType(null);
         return this;
     }
 

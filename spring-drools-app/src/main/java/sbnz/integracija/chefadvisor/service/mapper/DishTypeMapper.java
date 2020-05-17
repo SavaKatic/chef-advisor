@@ -14,7 +14,7 @@ public interface DishTypeMapper extends EntityMapper<DishTypeDTO, DishType> {
 
 
     @Mapping(target = "dishes", ignore = true)
-    @Mapping(target = "removeDishes", ignore = true)
+    @Mapping(target = "removeDish", ignore = true)
     DishType toEntity(DishTypeDTO dishTypeDTO);
 
     default DishType fromId(Long id) {

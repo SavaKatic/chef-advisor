@@ -9,12 +9,12 @@ import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } 
 import { IDish, Dish } from 'app/shared/model/dish.model';
 import { DishService } from './dish.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IDishType } from 'app/shared/model/dish-type.model';
-import { DishTypeService } from 'app/entities/dish-type/dish-type.service';
 import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
+import { IDishType } from 'app/shared/model/dish-type.model';
+import { DishTypeService } from 'app/entities/dish-type/dish-type.service';
 
-type SelectableEntity = IDishType | IUser;
+type SelectableEntity = IUser | IDishType;
 
 @Component({
   selector: 'jhi-dish-update',
@@ -22,8 +22,8 @@ type SelectableEntity = IDishType | IUser;
 })
 export class DishUpdateComponent implements OnInit {
   isSaving = false;
-  dishtypes: IDishType[] = [];
   users: IUser[] = [];
+  dishtypes: IDishType[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -32,16 +32,16 @@ export class DishUpdateComponent implements OnInit {
     image: [],
     imageContentType: [],
     description: [],
-    types: [],
-    users: []
+    users: [],
+    dishTypeId: []
   });
 
   constructor(
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
     protected dishService: DishService,
-    protected dishTypeService: DishTypeService,
     protected userService: UserService,
+    protected dishTypeService: DishTypeService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -50,9 +50,9 @@ export class DishUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ dish }) => {
       this.updateForm(dish);
 
-      this.dishTypeService.query().subscribe((res: HttpResponse<IDishType[]>) => (this.dishtypes = res.body || []));
-
       this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
+
+      this.dishTypeService.query().subscribe((res: HttpResponse<IDishType[]>) => (this.dishtypes = res.body || []));
     });
   }
 
@@ -64,8 +64,8 @@ export class DishUpdateComponent implements OnInit {
       image: dish.image,
       imageContentType: dish.imageContentType,
       description: dish.description,
-      types: dish.types,
-      users: dish.users
+      users: dish.users,
+      dishTypeId: dish.dishTypeId
     });
   }
 
@@ -108,8 +108,8 @@ export class DishUpdateComponent implements OnInit {
       imageContentType: this.editForm.get(['imageContentType'])!.value,
       image: this.editForm.get(['image'])!.value,
       description: this.editForm.get(['description'])!.value,
-      types: this.editForm.get(['types'])!.value,
-      users: this.editForm.get(['users'])!.value
+      users: this.editForm.get(['users'])!.value,
+      dishTypeId: this.editForm.get(['dishTypeId'])!.value
     };
   }
 
@@ -133,7 +133,7 @@ export class DishUpdateComponent implements OnInit {
     return item.id;
   }
 
-  getSelected(selectedVals: SelectableEntity[], option: SelectableEntity): SelectableEntity {
+  getSelected(selectedVals: IUser[], option: IUser): IUser {
     if (selectedVals) {
       for (let i = 0; i < selectedVals.length; i++) {
         if (option.id === selectedVals[i].id) {

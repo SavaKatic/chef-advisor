@@ -1,6 +1,5 @@
 import { IIngredient } from 'app/shared/model/ingredient.model';
 import { IRating } from 'app/shared/model/rating.model';
-import { IDishType } from 'app/shared/model/dish-type.model';
 import { IUser } from 'app/core/user/user.model';
 import { DishCategory } from 'app/shared/model/enumerations/dish-category.model';
 
@@ -13,8 +12,9 @@ export interface IDish {
   description?: string;
   ingredients?: IIngredient[];
   ratings?: IRating[];
-  types?: IDishType[];
   users?: IUser[];
+  dishTypeName?: string;
+  dishTypeId?: number;
 }
 
 export class Dish implements IDish {
@@ -27,7 +27,8 @@ export class Dish implements IDish {
     public description?: string,
     public ingredients?: IIngredient[],
     public ratings?: IRating[],
-    public types?: IDishType[],
-    public users?: IUser[]
+    public users?: IUser[],
+    public dishTypeName?: string,
+    public dishTypeId?: number
   ) {}
 }

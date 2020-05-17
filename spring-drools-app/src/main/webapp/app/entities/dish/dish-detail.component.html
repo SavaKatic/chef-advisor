@@ -27,17 +27,17 @@
                 <dd>
                     <span>{{ dish.description }}</span>
                 </dd>
-                <dt><span>Types</span></dt>
-                <dd>
-                    <span *ngFor="let types of dish.types; let last = last">
-                        <a [routerLink]="['/dish-type', types?.id, 'view']">{{ types.name }}</a>{{ last ? '' : ', ' }}
-                    </span>
-                </dd>
                 <dt><span>Users</span></dt>
                 <dd>
                     <span *ngFor="let users of dish.users; let last = last">
                         {{ users.login }}{{ last ? '' : ', ' }}
                     </span>
+                </dd>
+                <dt><span>Dish Type</span></dt>
+                <dd>
+                    <div *ngIf="dish.dishTypeId">
+                        <a [routerLink]="['/dish-type', dish.dishTypeId, 'view']">{{ dish.dishTypeName }}</a>
+                    </div>
                 </dd>
             </dl>
 

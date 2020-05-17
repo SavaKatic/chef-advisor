@@ -8,12 +8,10 @@
     ],
     "relationships": [
         {
-            "relationshipType": "many-to-many",
+            "relationshipType": "one-to-many",
             "otherEntityName": "dish",
-            "otherEntityRelationshipName": "types",
-            "relationshipName": "dishes",
-            "otherEntityField": "name",
-            "ownerSide": false
+            "otherEntityRelationshipName": "dishType",
+            "relationshipName": "dish"
         }
     ],
     "changelogDate": "20200510170400",

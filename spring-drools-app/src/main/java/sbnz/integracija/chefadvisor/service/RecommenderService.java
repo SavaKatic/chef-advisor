@@ -34,8 +34,11 @@ public class RecommenderService {
 	public List<DishDTO> getDishes(SearchFact s) {
         List<Ingredient> fridgeList = ingredientRepository.findByUserIsCurrentUser();
         s.setFridge(fridgeList);
+        System.out.println(fridgeList);
 
         List<Dish> allDishesList = dishRepository.findAll();
+        
+        System.out.println(allDishesList);
         
 		KieSession kieSession = kieContainer.newKieSession();
 	    kieSession.insert(s);

@@ -71,14 +71,6 @@ public class ChefadvisorApp {
         ApplicationContext ctx = app.run(args);
         Environment env = ctx.getEnvironment();
         logApplicationStartup(env);
-        String[] beanNames = ctx.getBeanDefinitionNames();
-        Arrays.sort(beanNames);
-
-        StringBuilder sb = new StringBuilder("Application beans:\n");
-        for (String beanName : beanNames) {
-          sb.append(beanName + "\n");
-        }
-        log.info(sb.toString());
     }
 
     private static void logApplicationStartup(Environment env) {
@@ -118,8 +110,8 @@ public class ChefadvisorApp {
       KieServices ks = KieServices.Factory.get();
       KieContainer kContainer = ks
           .newKieContainer(ks.newReleaseId("sbnz.integracija", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
-       KieScanner kScanner = ks.newKieScanner(kContainer);
-       kScanner.start(10_000);
+//       KieScanner kScanner = ks.newKieScanner(kContainer);
+//       kScanner.start(10_000);
       return kContainer;
     }
   

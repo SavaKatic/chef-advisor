@@ -70,3 +70,9 @@ id;amount;dish_id;ingredient_model_id;user_id
 69;190;15;33;null
 70;10;15;34;null
 71;10;15;35;null
+72;32;null;1;4
+73;32;null;2;4
+74;6;null;3;4
+75;8;null;4;4
+76;1;null;5;4
+77;340;null;6;4

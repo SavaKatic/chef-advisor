@@ -1,27 +1,15 @@
 package sbnz.integracija.chefadvisor.domain;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.transaction.Transactional;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory;
 
@@ -31,7 +19,6 @@ import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory;
 @Entity
 @Table(name = "dish")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Transactional
 public class Dish implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -65,19 +52,16 @@ public class Dish implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Rating> ratings = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "dish_types",
-               joinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "types_id", referencedColumnName = "id"))
-    private Set<DishType> types = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "dish_users",
                joinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"))
     private Set<User> users = new HashSet<>();
+
+    @ManyToOne
+    @JsonIgnoreProperties("dishes")
+    private DishType dishType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -203,31 +187,6 @@ public class Dish implements Serializable {
         this.ratings = ratings;
     }
 
-    public Set<DishType> getTypes() {
-        return types;
-    }
-
-    public Dish types(Set<DishType> dishTypes) {
-        this.types = dishTypes;
-        return this;
-    }
-
-    public Dish addTypes(DishType dishType) {
-        this.types.add(dishType);
-        dishType.getDishes().add(this);
-        return this;
-    }
-
-    public Dish removeTypes(DishType dishType) {
-        this.types.remove(dishType);
-        dishType.getDishes().remove(this);
-        return this;
-    }
-
-    public void setTypes(Set<DishType> dishTypes) {
-        this.types = dishTypes;
-    }
-
     public Set<User> getUsers() {
         return users;
     }
@@ -249,6 +208,19 @@ public class Dish implements Serializable {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public DishType getDishType() {
+        return dishType;
+    }
+
+    public Dish dishType(DishType dishType) {
+        this.dishType = dishType;
+        return this;
+    }
+
+    public void setDishType(DishType dishType) {
+        this.dishType = dishType;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -279,7 +251,7 @@ public class Dish implements Serializable {
             ", description='" + getDescription() + "'" +
             "}";
     }
-
+    
     public Double getCalories() {
       double calories = 0;
       for(Ingredient i: this.ingredients) {

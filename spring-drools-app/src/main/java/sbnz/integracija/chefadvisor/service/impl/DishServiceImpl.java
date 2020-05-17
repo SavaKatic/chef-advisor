@@ -1,22 +1,21 @@
 package sbnz.integracija.chefadvisor.service.impl;
 
-import sbnz.integracija.chefadvisor.service.DishService;
-import sbnz.integracija.chefadvisor.domain.Dish;
-import sbnz.integracija.chefadvisor.domain.Ingredient;
-import sbnz.integracija.chefadvisor.repository.DishRepository;
-import sbnz.integracija.chefadvisor.service.dto.DishDTO;
-import sbnz.integracija.chefadvisor.service.mapper.DishMapper;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import sbnz.integracija.chefadvisor.domain.Dish;
+import sbnz.integracija.chefadvisor.repository.DishRepository;
+import sbnz.integracija.chefadvisor.service.DishService;
+import sbnz.integracija.chefadvisor.service.dto.DishDTO;
+import sbnz.integracija.chefadvisor.service.mapper.DishMapper;
 
 /**
  * Service Implementation for managing {@link Dish}.
@@ -98,6 +97,7 @@ public class DishServiceImpl implements DishService {
         dishRepository.deleteById(id);
     }
 
+    
     /**
      * Get all by user is current user
      * 
@@ -111,5 +111,4 @@ public class DishServiceImpl implements DishService {
       Page<Dish> pages = new PageImpl<Dish>(dishList.subList(start, end), pageable, dishList.size());
       return pages.map(dishMapper::toDto);
   }
-
 }

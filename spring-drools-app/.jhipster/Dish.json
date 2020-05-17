@@ -35,19 +35,18 @@
         },
         {
             "relationshipType": "many-to-many",
-            "otherEntityName": "dishType",
-            "otherEntityRelationshipName": "dishes",
-            "relationshipName": "types",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
             "otherEntityName": "user",
             "otherEntityRelationshipName": "dishes",
             "relationshipName": "users",
             "otherEntityField": "login",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "dishType",
+            "otherEntityRelationshipName": "dish",
+            "relationshipName": "dishType",
+            "otherEntityField": "name"
         }
     ],
     "changelogDate": "20200510170800",
