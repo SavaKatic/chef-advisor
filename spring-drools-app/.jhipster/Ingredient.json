@@ -1,0 +1,43 @@
+{
+    "name": "Ingredient",
+    "fields": [
+        {
+            "fieldName": "amount",
+            "fieldType": "Double"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "ingredient",
+            "relationshipName": "user",
+            "otherEntityField": "login"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "ingredientModel",
+            "otherEntityRelationshipName": "ingredient",
+            "relationshipName": "ingredientModel",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "dish",
+            "otherEntityRelationshipName": "ingredient",
+            "relationshipName": "dish",
+            "otherEntityField": "name"
+        }
+    ],
+    "changelogDate": "20200510170300",
+    "entityTableName": "ingredient",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

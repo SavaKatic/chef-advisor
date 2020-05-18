@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <!--
+        Added the constraints for entity IngredientModel.
+    -->
+    <changeSet id="20200510170700-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="ingredient_model_id"
+                                 baseTableName="ingredient_model_ingredient_types"
+                                 constraintName="fk_ingredient_model_ingredient_types_ingredient_model_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ingredient_model"/>
+
+        <addForeignKeyConstraint baseColumnNames="ingredient_types_id"
+                                 baseTableName="ingredient_model_ingredient_types"
+                                 constraintName="fk_ingredient_model_ingredient_types_ingredient_types_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ingredient_type"/>
+        
+        <addForeignKeyConstraint baseColumnNames="unit_type_id"
+                                 baseTableName="ingredient_model"
+                                 constraintName="fk_ingredient_model_unit_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="unit_type"/>
+
+    </changeSet>
+</databaseChangeLog>

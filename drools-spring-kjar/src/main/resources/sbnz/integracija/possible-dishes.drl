@@ -1,0 +1,30 @@
+package sbnz.integracija;
+
+import sbnz.integracija.chefadvisor.facts.SearchFact
+import sbnz.integracija.chefadvisor.domain.Dish
+import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory
+import sbnz.integracija.chefadvisor.domain.Ingredient
+import java.util.Set
+
+global Set<Dish> possibleDishes;
+
+rule "Find Dishes - non strict mode"
+	agenda-group "search"
+    when
+        $s: SearchFact( strict == false )
+        $d: Dish( category == $s.category && dishType.name.equals($s.type) )
+    then
+    	possibleDishes.add($d);
+end
+
+rule "Find Dishes - strict mode"
+	agenda-group "search"
+	when
+        $s: SearchFact( strict == true, $fridge: fridge )
+       	$userIngredient: Ingredient() from $fridge
+        $d: Dish( category == $s.category && dishType.name.equals($s.type), $requiredIngredients: ingredients )
+        exists ( Ingredient( ingredientModel.id == $userIngredient.ingredientModel.id && amount <= $userIngredient.amount ) from $requiredIngredients ) 
+    then
+    	possibleDishes.add($d);
+end
+

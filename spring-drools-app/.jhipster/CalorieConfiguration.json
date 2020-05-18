@@ -1,0 +1,58 @@
+{
+    "name": "CalorieConfiguration",
+    "fields": [
+        {
+            "fieldName": "breakfastLow",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "breakfastHigh",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "lunchLow",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "lunchHigh",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "dinnerLow",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "dinnerHigh",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "snackLow",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "snackHigh",
+            "fieldType": "Double"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "calorieConfiguration",
+            "relationshipName": "user",
+            "otherEntityField": "login",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20200510170900",
+    "entityTableName": "calorie_configuration",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

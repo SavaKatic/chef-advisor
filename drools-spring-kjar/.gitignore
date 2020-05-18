@@ -1,0 +1,7 @@
+/log/
+/target/
+
+*.jar
+*.war
+*.ear
+*.db

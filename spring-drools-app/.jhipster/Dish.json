@@ -1,0 +1,63 @@
+{
+    "name": "Dish",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "category",
+            "fieldType": "DishCategory",
+            "fieldValues": "BREAKFAST,LUNCH,DINNER,SNACK"
+        },
+        {
+            "fieldName": "image",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ingredient",
+            "otherEntityRelationshipName": "dish",
+            "relationshipName": "ingredient"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "rating",
+            "otherEntityRelationshipName": "dish",
+            "relationshipName": "rating"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "dishes",
+            "relationshipName": "users",
+            "otherEntityField": "login",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "dishType",
+            "otherEntityRelationshipName": "dish",
+            "relationshipName": "dishType",
+            "otherEntityField": "name"
+        }
+    ],
+    "changelogDate": "20200510170800",
+    "entityTableName": "dish",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,32 @@
+{
+    "name": "UnitType",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "value",
+            "fieldType": "Double"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ingredientModel",
+            "otherEntityRelationshipName": "unitType",
+            "relationshipName": "ingredientModel"
+        }
+    ],
+    "changelogDate": "20200510170600",
+    "entityTableName": "unit_type",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

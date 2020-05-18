@@ -1,0 +1,36 @@
+id;name;calories_per_unit;unit_type_id
+1;Soy Sauce;0.53;2
+2;Brown Sugar;3.8;2
+3;Onion;0.39;2
+4;Olive Oil;8.8;2
+5;Garlic;3.3;2
+6;Pork Tenderloins;1.5;6
+7;Bourbon Whiskey;3.7;2
+8;Tomato Paste;0.82;2
+9;Hot Pepper Sauce;0.11;2
+10;Dried Oregano;0.13;2
+11;Paprika;2.82;2
+12;Chicken Thighs;1.77;6
+13;Orange Juice;0.44;2
+14;Tuna Steaks;1.12;6
+15;Cider Vinegar;0.21;2
+16;Honey;3.04;2
+17;Mushrooms;0.22;2
+18;Chicken Breasts;1.65;6
+19;Lime Juice;0.24;2
+20;Tortilla;2.2;6
+21;Tilapia Fillet;1.28;6
+22;Shrimp;0.99;6
+23;Lemon Juice;0.31;2
+24;Cheese;4.02;2
+25;Beef;2.51;6
+26;Hamburger Buns;2.71;6
+27;Potatoes;0.76;6
+28;Quinoa;1.4;6
+29;Coconut;3.54;2
+30;Peanut Butter;5.9;2
+31;Banana;0.88;2
+32;Blueberries;0.57;2
+33;Flour;3.64;6
+34;Eggs;1.55;2
+35;Butter;7.16;2

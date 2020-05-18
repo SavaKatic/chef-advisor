@@ -1,0 +1,42 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "sbnz.integracija.chefadvisor"
+    },
+    "jhipsterVersion": "6.8.0",
+    "applicationType": "monolith",
+    "baseName": "chefadvisor",
+    "packageName": "sbnz.integracija.chefadvisor",
+    "packageFolder": "sbnz/integracija/chefadvisor",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NjIzZDA4OTI4NDA3ZWE3MzM1YzU1ZTVlOGYzNDFiNDcxODk0N2Y3NDAwOWUzMmQyYzk4NzdkODA0MjBhMzdmYzUzZDdhNWUwZGZkMjhlYWFmMWE1NTBhOTM1ZDUyOWFkNmU4MmJhZTI4ODA5Yjc3NWQ5YzEyYTEzNjkwNTIxOTc=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "creationTimestamp": 1589118046904,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "blueprints": [],
+    "herokuAppName": "chefadvisor",
+    "herokuDeployType": "jar"
+  }
+}

@@ -1,0 +1,83 @@
+
+
+entity Ingredient {
+	amount Double
+}
+
+entity DishType {
+	name String
+}
+
+entity IngredientType {
+	name String
+}
+
+entity UnitType {
+	name String,
+    value Double
+}
+
+entity IngredientModel {
+	name String,
+    caloriesPerUnit Double
+}
+
+entity Dish {
+	name String,
+    category DishCategory,
+    image Blob,
+    description String
+}
+
+entity CalorieConfiguration {
+	breakfastLow Double,
+    breakfastHigh Double,
+    lunchLow Double,
+    lunchHigh Double,
+    dinnerLow Double,
+    dinnerHigh Double,
+    snackLow Double,
+    snackHigh Double
+}
+
+entity Rating {
+	comment String,
+    rating Integer
+}
+
+
+enum DishCategory {
+	BREAKFAST, LUNCH, DINNER, SNACK
+}
+
+relationship ManyToMany {
+    IngredientModel{ingredientTypes(name)} to 
+    IngredientType{ingredientModels(name)}
+    Dish{users(login)} to User{dishes(name)}
+}
+
+relationship OneToMany {
+	IngredientModel to Ingredient{ingredientModel(name)} 
+  Dish to Ingredient{dish(name)}
+  DishType to Dish{dishType(name)}
+  Dish to Rating{dish(name)}
+  UnitType to IngredientModel{unitType(name)}
+}
+
+relationship ManyToOne {
+  Ingredient{user(login)} to User
+  Rating{user(login)} to User
+}
+
+relationship OneToOne {
+	CalorieConfiguration{user(login)} to User
+}
+
+
+paginate UnitType, IngredientType, DishType with infinite-scroll
+paginate Dish, IngredientModel, Ingredient with pagination
+
+dto * with mapstruct
+
+service all with serviceImpl except CalorieConfiguration
+
