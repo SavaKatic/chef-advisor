@@ -46,6 +46,8 @@ spring:
         useServerPrepStmts: true
   jpa:
     show-sql: false
+    properties:
+      hibernate.enable_lazy_load_no_trans: true
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod

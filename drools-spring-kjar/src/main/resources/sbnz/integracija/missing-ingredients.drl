@@ -1,0 +1,34 @@
+package sbnz.integracija;
+
+import sbnz.integracija.chefadvisor.facts.ReverseSearchFact
+import sbnz.integracija.chefadvisor.domain.Dish
+import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory
+import sbnz.integracija.chefadvisor.domain.Ingredient
+import java.util.Set
+
+global Set<Ingredient> missingIngredients;
+
+
+rule "Find missing Ingredients"
+	agenda-group "reverse-search"
+	when
+        $s: ReverseSearchFact( $fridge: fridge )
+        $d: Dish( $requiredIngredients: ingredients )
+        $requiredIngredient: Ingredient() from $requiredIngredients
+        not(exists ( Ingredient( ingredientModel.id == $requiredIngredient.ingredientModel.id) from $fridge))
+    then
+    	missingIngredients.add($requiredIngredient);
+end
+
+rule "Find ingredients with amount that is not enough"
+	agenda-group "reverse-search"
+	when
+        $s: ReverseSearchFact( $fridge: fridge )
+        $d: Dish( $requiredIngredients: ingredients )
+        $requiredIngredient: Ingredient() from $requiredIngredients
+        $ingredientWithLowerAmount: Ingredient( ingredientModel.id == $requiredIngredient.ingredientModel.id && amount < $requiredIngredient.amount) from $fridge
+    then
+    	$requiredIngredient.setAmount($requiredIngredient.getAmount() - $ingredientWithLowerAmount.getAmount());
+    	missingIngredients.add($requiredIngredient);
+end
+

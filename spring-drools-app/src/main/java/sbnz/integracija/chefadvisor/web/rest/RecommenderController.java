@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sbnz.integracija.chefadvisor.facts.SearchFact;
 import sbnz.integracija.chefadvisor.service.RecommenderService;
 import sbnz.integracija.chefadvisor.service.dto.DishDTO;
+import sbnz.integracija.chefadvisor.service.dto.IngredientDTO;
 
 /**
  * REST controller for searching Dishes {@link sbnz.integracija.chefadvisor.domain.Dish}.
@@ -27,15 +28,19 @@ public class RecommenderController {
 		this.recommenderService = recommenderService;
 	}
 	
-	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<DishDTO>> getDishes(@RequestParam(required = true) boolean isStrict, @RequestParam(required = true) String dishType,
+	@RequestMapping(value = "/search-dishes", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<List<DishDTO>> getPossibleDishes(@RequestParam(required = true) boolean isStrict, @RequestParam(required = true) String dishType,
 			@RequestParam(required = true) String dishCategory) {
 		SearchFact s = new SearchFact(isStrict, dishCategory, dishType);
-		List<DishDTO> dishes = this.recommenderService.getDishes(s);
-		for(DishDTO d: dishes) {
-			System.out.println(d);
-		}
-//		List<Dish> dishes = new ArrayList<Dish>();
+		List<DishDTO> dishes = this.recommenderService.getPossibleDishes(s);
 		return ResponseEntity.ok().body(dishes);
 	}
+	
+	@RequestMapping(value = "/search-ingredients", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<List<IngredientDTO>> reverseSearchMissingIngredients(@RequestParam(required = true) Long dishId) {
+		List<IngredientDTO> ingredients = this.recommenderService.reverseSearchMissingIngredients(dishId);
+		return ResponseEntity.ok().body(ingredients);
+	}
+	
+	
 }

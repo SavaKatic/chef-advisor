@@ -7,7 +7,7 @@ import sbnz.integracija.chefadvisor.domain.Ingredient;
 import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory;
 
 public class SearchFact {
-	private boolean isStrict;
+	private boolean strict;
 	private List<Ingredient> fridge;
 	private DishCategory category;
 	private String type;
@@ -16,26 +16,28 @@ public class SearchFact {
 		super();
 	}
 	
-	public SearchFact(boolean isStrict, String category, String type) {
-		this.isStrict = isStrict;
+	public SearchFact(boolean strict, String category, String type) {
+		this.strict = strict;
 		this.type = type;
 		this.category = DishCategory.valueOf(category);
 	}
 	
-	public SearchFact(boolean isStrict, List<Ingredient> fridge, DishCategory category, String type) {
+	public SearchFact(boolean strict, List<Ingredient> fridge, DishCategory category, String type) {
 		super();
-		this.isStrict = isStrict;
+		this.strict = strict;
 		this.fridge = fridge;
 		this.category = category;
 		this.type = type;
 	}
 
+	
+
 	public boolean isStrict() {
-		return isStrict;
+		return strict;
 	}
 
-	public void setStrict(boolean isStrict) {
-		this.isStrict = isStrict;
+	public void setStrict(boolean strict) {
+		this.strict = strict;
 	}
 
 	public List<Ingredient> getFridge() {
@@ -64,7 +66,7 @@ public class SearchFact {
 
 	@Override
 	public String toString() {
-		return "SearchFact [isStrict=" + isStrict + ", fridge=" + fridge + ", category=" + category + ", type=" + type
+		return "SearchFact [ fridge=" + fridge + ", category=" + category + ", type=" + type
 				+ "]";
 	}
 
