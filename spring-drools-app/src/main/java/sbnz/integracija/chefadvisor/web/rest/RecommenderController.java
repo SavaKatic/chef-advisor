@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import sbnz.integracija.chefadvisor.domain.CalorieConfiguration;
 import sbnz.integracija.chefadvisor.facts.SearchFact;
+import sbnz.integracija.chefadvisor.service.CalorieConfigurationService;
 import sbnz.integracija.chefadvisor.service.RecommenderService;
 import sbnz.integracija.chefadvisor.service.dto.DishDTO;
 import sbnz.integracija.chefadvisor.service.dto.IngredientDTO;
@@ -22,16 +24,22 @@ import sbnz.integracija.chefadvisor.service.dto.IngredientDTO;
 public class RecommenderController {
 	
 	private final RecommenderService recommenderService;
+	
+	private final CalorieConfigurationService calorieConfigurationService;
 
 	@Autowired
-	public RecommenderController(RecommenderService recommenderService) {
+	public RecommenderController(RecommenderService recommenderService, CalorieConfigurationService calorieConfigurationService) {
 		this.recommenderService = recommenderService;
+		this.calorieConfigurationService = calorieConfigurationService;
 	}
 	
 	@RequestMapping(value = "/search-dishes", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<DishDTO>> getPossibleDishes(@RequestParam(required = true) boolean isStrict, @RequestParam(required = true) String dishType,
 			@RequestParam(required = true) String dishCategory) {
-		SearchFact s = new SearchFact(isStrict, dishCategory, dishType);
+		CalorieConfiguration config = calorieConfigurationService.findByUserIsCurrentUser();
+		
+		System.out.println(config);
+		SearchFact s = new SearchFact(isStrict, dishCategory, dishType, config);
 		List<DishDTO> dishes = this.recommenderService.getPossibleDishes(s);
 		return ResponseEntity.ok().body(dishes);
 	}

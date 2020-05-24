@@ -43,7 +43,6 @@ public class RecommenderService {
 	public List<DishDTO> getPossibleDishes(SearchFact s) {
         List<Ingredient> fridgeList = ingredientRepository.findByUserIsCurrentUser();
         s.setFridge(fridgeList);
-        System.out.println(fridgeList);
 
         List<Dish> allDishesList = dishRepository.findAllWithEagerRelationships();
         
@@ -61,7 +60,6 @@ public class RecommenderService {
 	    kieSession.getAgenda().getAgendaGroup("search").setFocus();
 		kieSession.fireAllRules();
 	    kieSession.dispose();
-	    
 
 		return dishMapper.toDto(new ArrayList<Dish>(result));
 	}

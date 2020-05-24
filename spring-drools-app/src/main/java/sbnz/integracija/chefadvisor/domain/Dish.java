@@ -62,8 +62,20 @@ public class Dish implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("dishes")
     private DishType dishType;
+    
+    @Column(name="chosen")
+    private boolean chosen = false;
+    
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public boolean isChosen() {
+		return chosen;
+	}
+
+	public void setChosen(boolean chosen) {
+		this.chosen = chosen;
+	}
+
+	// jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }

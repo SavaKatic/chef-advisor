@@ -81,4 +81,8 @@ public class CalorieConfigurationService {
         log.debug("Request to delete CalorieConfiguration : {}", id);
         calorieConfigurationRepository.deleteById(id);
     }
+    
+    public CalorieConfiguration findByUserIsCurrentUser() {
+    	return this.calorieConfigurationRepository.findByUserIsCurrentUser().get(0);
+    }
 }

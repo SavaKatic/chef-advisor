@@ -22,9 +22,30 @@ rule "Find Dishes - strict mode"
 	when
         $s: SearchFact( strict == true, $fridge: fridge )
        	$userIngredient: Ingredient() from $fridge
-        $d: Dish( category == $s.category && dishType.name.equals($s.type), $requiredIngredients: ingredients )
+        $d: Dish( chosen != true && category == $s.category && dishType.name.equals($s.type), $requiredIngredients: ingredients )
         exists ( Ingredient( ingredientModel.id == $userIngredient.ingredientModel.id && amount <= $userIngredient.amount ) from $requiredIngredients ) 
     then
+    	
+    	$d.setChosen(true);
     	possibleDishes.add($d);
+    	update($d);
 end
 
+rule "Adjust dish ingredient calories"
+	agenda-group "search"
+	when
+		$d: Dish( chosen == true, $ingredients: ingredients )
+		SearchFact( strict == true, $minimumCalories: minimumCalories)
+		Number(intValue < $minimumCalories) from accumulate(
+							Ingredient(
+								$c: ingredientModel.caloriesPerUnit,
+								$a: amount
+							) from $ingredients,
+							sum($a * $c)
+					)
+		$i: Ingredient() from $ingredients
+	then
+		$d.increaseIngredients();
+		update($d);
+		
+end

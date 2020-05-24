@@ -1151,7 +1151,7 @@
                     <plugin>
                         <groupId>org.liquibase</groupId>
                         <artifactId>liquibase-maven-plugin</artifactId>
-                        <configuration combine.self="override">
+                        <configuration>
                             <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
                             <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                             <driver></driver>
