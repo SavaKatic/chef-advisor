@@ -1,41 +1,42 @@
 package sbnz.integracija;
 
-import sbnz.integracija.chefadvisor.facts.SearchFact
+import sbnz.integracija.chefadvisor.facts.SearchInputFact
+import sbnz.integracija.chefadvisor.facts.SearchResultFact
 import sbnz.integracija.chefadvisor.domain.Dish
 import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory
 import sbnz.integracija.chefadvisor.domain.Ingredient
-import java.util.Set
 
-global Set<Dish> possibleDishes;
 
 rule "Find Dishes - non strict mode"
 	agenda-group "search"
     when
-        $s: SearchFact( strict == false )
-        $d: Dish( category == $s.category && dishType.name.equals($s.type) )
+        $sif: SearchInputFact(strict == false, $dishes: dishes)
+        $srf: SearchResultFact($possibleDishes: possibleDishes)
+        $d: Dish( category == $sif.category && dishType.name.equals($sif.type) && this not memberOf $possibleDishes ) from $dishes
     then
-    	possibleDishes.add($d);
+    	$srf.getPossibleDishes().add($d);
 end
 
-rule "Find Dishes - strict mode"
+
+rule "Find Dishes - remove strict non-matches"
+	salience 1
 	agenda-group "search"
 	when
-        $s: SearchFact( strict == true, $fridge: fridge )
-       	$userIngredient: Ingredient() from $fridge
-        $d: Dish( chosen != true && category == $s.category && dishType.name.equals($s.type), $requiredIngredients: ingredients )
-        exists ( Ingredient( ingredientModel.id == $userIngredient.ingredientModel.id && amount <= $userIngredient.amount ) from $requiredIngredients ) 
-    then
-    	
-    	$d.setChosen(true);
-    	possibleDishes.add($d);
-    	update($d);
+		$sif: SearchInputFact( strict == true, $dishes: dishes)
+	    $d: Dish( $requiredIngredients: ingredients ) from $dishes
+	    $requiredIngredient: Ingredient() from $requiredIngredients
+	    SearchInputFact( $requiredIngredient not memberOf fridge )
+	then
+	    $sif.getDishes().remove($d);
+	    update($sif);
 end
+
 
 rule "Adjust dish ingredient calories"
 	agenda-group "search"
 	when
-		$d: Dish( chosen == true, $ingredients: ingredients )
-		SearchFact( strict == true, $minimumCalories: minimumCalories)
+		SearchInputFact( strict == true, $minimumCalories: minimumCalories, $dishes: dishes)
+		$d: Dish( $ingredients: ingredients ) from $dishes
 		Number(intValue < $minimumCalories) from accumulate(
 							Ingredient(
 								$c: ingredientModel.caloriesPerUnit,
@@ -46,6 +47,6 @@ rule "Adjust dish ingredient calories"
 		$i: Ingredient() from $ingredients
 	then
 		$d.increaseIngredients();
-		update($d);
-		
 end
+
+

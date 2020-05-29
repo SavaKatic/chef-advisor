@@ -108,6 +108,9 @@ public class Ingredient implements Serializable {
         if (!(o instanceof Ingredient)) {
             return false;
         }
+        if (this.ingredientModel != null && ((Ingredient) o).ingredientModel != null) {
+        	return this.ingredientModel.getId() == ((Ingredient) o).ingredientModel.getId();
+        }
         return id != null && id.equals(((Ingredient) o).id);
     }
 

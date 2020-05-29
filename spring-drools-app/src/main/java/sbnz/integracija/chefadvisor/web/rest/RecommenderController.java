@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sbnz.integracija.chefadvisor.domain.CalorieConfiguration;
-import sbnz.integracija.chefadvisor.facts.SearchFact;
+import sbnz.integracija.chefadvisor.facts.SearchInputFact;
 import sbnz.integracija.chefadvisor.service.CalorieConfigurationService;
 import sbnz.integracija.chefadvisor.service.RecommenderService;
 import sbnz.integracija.chefadvisor.service.dto.DishDTO;
@@ -38,8 +38,7 @@ public class RecommenderController {
 			@RequestParam(required = true) String dishCategory) {
 		CalorieConfiguration config = calorieConfigurationService.findByUserIsCurrentUser();
 		
-		System.out.println(config);
-		SearchFact s = new SearchFact(isStrict, dishCategory, dishType, config);
+		SearchInputFact s = new SearchInputFact(isStrict, dishCategory, dishType, config);
 		List<DishDTO> dishes = this.recommenderService.getPossibleDishes(s);
 		return ResponseEntity.ok().body(dishes);
 	}

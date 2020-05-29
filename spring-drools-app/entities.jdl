@@ -26,7 +26,8 @@ entity Dish {
 	name String,
     category DishCategory,
     image Blob,
-    description String
+    description String,
+    averageRating Double
 }
 
 entity CalorieConfiguration {
@@ -62,6 +63,7 @@ relationship OneToMany {
   DishType to Dish{dishType(name)}
   Dish to Rating{dish(name)}
   UnitType to IngredientModel{unitType(name)}
+  Ingredient{ingredients} to Ingredient{ingredient}
 }
 
 relationship ManyToOne {
