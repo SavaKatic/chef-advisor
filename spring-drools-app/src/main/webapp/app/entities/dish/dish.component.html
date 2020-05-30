@@ -27,6 +27,7 @@
                     <th scope="col"  jhiSortBy="category"><span>Category</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="image"><span>Image</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="description"><span>Description</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="averageRating"><span>Average Rating</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="dishTypeName"><span>Dish Type</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
@@ -41,6 +42,7 @@
                         <span *ngIf="dish.image">{{ dish.imageContentType }}, {{ byteSize(dish.image) }}</span>
                     </td>
                     <td>{{ dish.description }}</td>
+                    <td>{{ dish.averageRating }}</td>
                     <td>
                         <div *ngIf="dish.dishTypeId">
                             <a [routerLink]="['/dish-type', dish.dishTypeId , 'view']" >{{ dish.dishTypeName }}</a>

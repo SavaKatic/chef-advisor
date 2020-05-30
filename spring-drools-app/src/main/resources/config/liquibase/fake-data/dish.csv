@@ -1,11 +1,11 @@
-id;name;category;image;image_content_type;description;
-1;generating Keyboard;BREAKFAST;../fake-data/blob/hipster.png;image/png;Tasty Netherlands Antillian Guilder overriding
-2;Books benchmark;SNACK;../fake-data/blob/hipster.png;image/png;Regional Rustic Rubber Sausages
-3;sensor;LUNCH;../fake-data/blob/hipster.png;image/png;Developer Investment Account
-4;Soft Advanced Bridge;DINNER;../fake-data/blob/hipster.png;image/png;Awesome Plastic Mouse
-5;supply-chains Nebraska payment;BREAKFAST;../fake-data/blob/hipster.png;image/png;radical e-business
-6;index Sleek Front-line;BREAKFAST;../fake-data/blob/hipster.png;image/png;Crossroad Granite Marketing
-7;generate;BREAKFAST;../fake-data/blob/hipster.png;image/png;violet
-8;bypassing Washington;SNACK;../fake-data/blob/hipster.png;image/png;Cambridgeshire 1080p
-9;extensible robust;LUNCH;../fake-data/blob/hipster.png;image/png;Borders Creative Kyrgyz Republic
-10;workforce Investment Account;LUNCH;../fake-data/blob/hipster.png;image/png;Table
+id;name;category;image;image_content_type;description;average_rating
+1;generating Keyboard;BREAKFAST;../fake-data/blob/hipster.png;image/png;Tasty Netherlands Antillian Guilder overriding;35610
+2;Incredible Wooden Tuna;LUNCH;../fake-data/blob/hipster.png;image/png;Towels;93009
+3;sensor;LUNCH;../fake-data/blob/hipster.png;image/png;Developer Investment Account;92069
+4;open-source;LUNCH;../fake-data/blob/hipster.png;image/png;Generic Ergonomic Rubber Gloves;19866
+5;supply-chains Nebraska payment;BREAKFAST;../fake-data/blob/hipster.png;image/png;radical e-business;89645
+6;markets Bedfordshire structure;SNACK;../fake-data/blob/hipster.png;image/png;Wooden Views;13636
+7;generate;BREAKFAST;../fake-data/blob/hipster.png;image/png;violet;37728
+8;Awesome Branding Clothing;LUNCH;../fake-data/blob/hipster.png;image/png;Accounts calculate;36954
+9;robust bleeding-edge;LUNCH;../fake-data/blob/hipster.png;image/png;Borders Creative Kyrgyz Republic;63768
+10;Planner;BREAKFAST;../fake-data/blob/hipster.png;image/png;applications;57051

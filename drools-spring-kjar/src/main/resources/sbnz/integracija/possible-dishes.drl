@@ -7,16 +7,25 @@ import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory
 import sbnz.integracija.chefadvisor.domain.Ingredient
 
 
-rule "Find Dishes - non strict mode"
+rule "Find Dishes - remove based on category"
 	agenda-group "search"
-    when
-        $sif: SearchInputFact(strict == false, $dishes: dishes)
-        $srf: SearchResultFact($possibleDishes: possibleDishes)
-        $d: Dish( category == $sif.category && dishType.name.equals($sif.type) && this not memberOf $possibleDishes ) from $dishes
-    then
-    	$srf.getPossibleDishes().add($d);
+	when
+        $sif: SearchInputFact($dishes: dishes)
+		$d: Dish( category != $sif.category )
+	then
+		$sif.getDishes().remove($d);
+		update($sif);
 end
 
+rule "Find Dishes - remove based on type"
+	agenda-group "search"
+	when
+		$sif: SearchInputFact($dishes: dishes)
+		$d: Dish( dishType.name.equals($sif.type) )
+	then
+		$sif.getDishes().remove($d);
+		update($sif);
+end
 
 rule "Find Dishes - remove strict non-matches"
 	salience 1
@@ -49,4 +58,14 @@ rule "Adjust dish ingredient calories"
 		$d.increaseIngredients();
 end
 
-
+rule "Sort Dishes"
+	agenda-group "sort"
+	when 
+		$sif: SearchInputFact( $dishes: dishes )
+		$srf: SearchResultFact($sortedDishes: sortedDishes)
+		$dish: Dish( this not memberOf $sortedDishes, $averageRating: averageRating ) from $dishes
+		not(exists( Dish( this != $dish && this not memberOf $sortedDishes && averageRating > $averageRating ) from $dishes))
+	then
+		$srf.getSortedDishes().add($dish);
+		update($srf);
+end

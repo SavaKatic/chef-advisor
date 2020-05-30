@@ -57,9 +57,15 @@ public class RecommenderService {
 	    kieSession.getAgenda().getAgendaGroup("search").setFocus();
 		kieSession.fireAllRules();
 		kieSession.dispose();
-	    
-
-		return dishMapper.toDto(new ArrayList<Dish>(s.isStrict() ? s.getDishes() : srf.getPossibleDishes()));
+		
+		kieSession = kieContainer.newKieSession();
+		kieSession.insert(s);
+		kieSession.insert(srf);
+	    kieSession.getAgenda().getAgendaGroup("sort").setFocus();
+	    kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		return dishMapper.toDto(srf.getSortedDishes());
 	}
 	
 	public List<IngredientDTO> reverseSearchMissingIngredients(Long dishId) {

@@ -8,6 +8,8 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Ingredient.
@@ -26,6 +28,10 @@ public class Ingredient implements Serializable {
     @Column(name = "amount")
     private Double amount;
 
+    @OneToMany(mappedBy = "ingredient")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Ingredient> ingredients = new HashSet<>();
+
     @ManyToOne
     @JsonIgnoreProperties("ingredients")
     private User user;
@@ -37,6 +43,10 @@ public class Ingredient implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("ingredients")
     private Dish dish;
+
+    @ManyToOne
+    @JsonIgnoreProperties("ingredients")
+    private Ingredient ingredient;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -58,6 +68,31 @@ public class Ingredient implements Serializable {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public Ingredient ingredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+        return this;
+    }
+
+    public Ingredient addIngredients(Ingredient ingredient) {
+        this.ingredients.add(ingredient);
+        ingredient.setIngredient(this);
+        return this;
+    }
+
+    public Ingredient removeIngredients(Ingredient ingredient) {
+        this.ingredients.remove(ingredient);
+        ingredient.setIngredient(null);
+        return this;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public User getUser() {
@@ -98,6 +133,19 @@ public class Ingredient implements Serializable {
     public void setDish(Dish dish) {
         this.dish = dish;
     }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public Ingredient ingredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+        return this;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -109,6 +157,11 @@ public class Ingredient implements Serializable {
             return false;
         }
         if (this.ingredientModel != null && ((Ingredient) o).ingredientModel != null) {
+    		for(Ingredient i: this.ingredients) {
+    			if (i.getIngredientModel().getId() == ((Ingredient) o).ingredientModel.getId()) {
+    				return true;
+    			}
+    		}
         	return this.ingredientModel.getId() == ((Ingredient) o).ingredientModel.getId();
         }
         return id != null && id.equals(((Ingredient) o).id);

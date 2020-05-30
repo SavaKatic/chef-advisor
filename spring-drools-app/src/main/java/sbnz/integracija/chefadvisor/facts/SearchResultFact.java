@@ -1,6 +1,8 @@
 package sbnz.integracija.chefadvisor.facts;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import sbnz.integracija.chefadvisor.domain.Dish;
@@ -8,17 +10,17 @@ import sbnz.integracija.chefadvisor.domain.Ingredient;
 
 public class SearchResultFact {
 	private Set<Dish> possibleDishes;
-	private Set<Dish> sortedDishes;
+	private List<Dish> sortedDishes;
 	private Set<Ingredient> missingIngredients;
 	
 	public SearchResultFact() {
 		super();
 		this.possibleDishes = new HashSet<Dish>();
-		this.sortedDishes = new HashSet<Dish>();
+		this.sortedDishes = new ArrayList<Dish>();
 		this.missingIngredients = new HashSet<Ingredient>();
 	}
 	
-	public SearchResultFact(Set<Dish> possibleDishes, Set<Dish> sortedDishes, Set<Ingredient> missingIngredients) {
+	public SearchResultFact(Set<Dish> possibleDishes, List<Dish> sortedDishes, Set<Ingredient> missingIngredients) {
 		super();
 		this.possibleDishes = possibleDishes;
 		this.sortedDishes = sortedDishes;
@@ -30,10 +32,10 @@ public class SearchResultFact {
 	public void setPossibleDishes(Set<Dish> possibleDishes) {
 		this.possibleDishes = possibleDishes;
 	}
-	public Set<Dish> getSortedDishes() {
+	public List<Dish> getSortedDishes() {
 		return sortedDishes;
 	}
-	public void setSortedDishes(Set<Dish> sortedDishes) {
+	public void setSortedDishes(List<Dish> sortedDishes) {
 		this.sortedDishes = sortedDishes;
 	}
 

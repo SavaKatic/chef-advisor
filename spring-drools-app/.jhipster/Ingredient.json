@@ -8,6 +8,12 @@
     ],
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ingredient",
+            "otherEntityRelationshipName": "ingredient",
+            "relationshipName": "ingredients"
+        },
+        {
             "relationshipType": "many-to-one",
             "otherEntityName": "user",
             "otherEntityRelationshipName": "ingredient",
@@ -27,6 +33,13 @@
             "otherEntityRelationshipName": "ingredient",
             "relationshipName": "dish",
             "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "ingredient",
+            "otherEntityRelationshipName": "ingredients",
+            "relationshipName": "ingredient",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20200510170300",

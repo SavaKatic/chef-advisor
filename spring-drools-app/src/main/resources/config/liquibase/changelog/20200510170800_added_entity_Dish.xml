@@ -34,14 +34,15 @@
             <column name="dish_type_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="chosen" type="boolean" defaultValueBoolean="false">
+            <column name="average_rating" type="double">
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
     </changeSet>
 
     <changeSet id="20200510170800-1-relations" author="jhipster">
-      
+
         <createTable tableName="dish_users">
             <column name="users_id" type="bigint">
                 <constraints nullable="false"/>
@@ -76,8 +77,10 @@
             <column name="image_content_type" type="string"/>
             <column name="description" type="string"/>
             <column name="dish_type_id" type="numeric"/>
+            <column name="average_rating" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
-                <loadData
+        <loadData
                   file="config/liquibase/data/ingredient.csv"
                   separator=";"
                   tableName="ingredient">
@@ -86,6 +89,7 @@
             <column name="dish_id" type="numeric"/>
             <column name="ingredient_model_id" type="numeric"/>
             <column name="user_id" type="numeric"/>
+            <column name="ingredient_id" type="numeric"/>
         </loadData>
     </changeSet>
 

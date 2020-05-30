@@ -96,7 +96,6 @@ public class IngredientResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
-    
     /**
      * {@code GET  /ingredients} : get all the ingredients.
      *
