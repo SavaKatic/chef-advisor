@@ -1,11 +1,17 @@
 package sbnz.integracija.chefadvisor;
 
-import sbnz.integracija.chefadvisor.config.ApplicationProperties;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Collection;
 
-import io.github.jhipster.config.DefaultProfileUtil;
-import io.github.jhipster.config.JHipsterConstants;
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
+import org.kie.api.KieServices;
+import org.kie.api.builder.KieScanner;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -13,18 +19,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.kie.api.KieServices;
-import org.kie.api.builder.KieScanner;
-import org.kie.api.runtime.KieContainer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.ApplicationContext;
-import javax.annotation.PostConstruct;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Collection;
+
+import io.github.jhipster.config.DefaultProfileUtil;
+import io.github.jhipster.config.JHipsterConstants;
+import sbnz.integracija.chefadvisor.config.ApplicationProperties;
 
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
@@ -113,6 +115,11 @@ public class ChefadvisorApp {
       KieScanner kScanner = ks.newKieScanner(kContainer);
       kScanner.start(10_000);
       return kContainer;
+    }
+
+    @Bean
+    public KieSession cepKieSession() {
+      return this.kieContainer().newKieSession();
     }
   
 }
