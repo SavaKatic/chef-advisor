@@ -1,0 +1,35 @@
+template header
+numberOfSuspiciousActions
+
+
+package sbnz.integracija;
+
+import sbnz.integracija.chefadvisor.events.UserActionEvent;
+import sbnz.integracija.chefadvisor.domain.enumeration.WarningType;
+
+declare SuspiciousUserActionEvent
+    @role(event)
+    userId: Long
+    reason: WarningType
+end
+
+declare AlarmTriggered
+    userId: Long
+end
+
+template "alarm-rules"
+
+rule "More than @{numberOfSuspiciousActions} suspicious user actions trigger a potential spammer alarm_@{row.rowNumber}"
+    when
+        SuspiciousUserActionEvent($userId: userId)
+        not (AlarmTriggered(userId == $userId))
+        Number(intValue >= @{numberOfSuspiciousActions}) from accumulate(
+            $s: SuspiciousUserActionEvent(userId == $userId),
+            count($s)
+        )
+    then
+        System.out.println("WARNING: Suspicious user!" + $userId);
+        insert(new AlarmTriggered($userId));
+end
+
+end template

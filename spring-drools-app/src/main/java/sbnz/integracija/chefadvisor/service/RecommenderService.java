@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import sbnz.integracija.chefadvisor.domain.Dish;
 import sbnz.integracija.chefadvisor.domain.Ingredient;
-import sbnz.integracija.chefadvisor.facts.ReverseSearchFact;
 import sbnz.integracija.chefadvisor.facts.SearchInputFact;
 import sbnz.integracija.chefadvisor.facts.SearchResultFact;
 import sbnz.integracija.chefadvisor.repository.DishRepository;

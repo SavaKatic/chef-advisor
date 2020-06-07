@@ -1,0 +1,36 @@
+template header
+numberOfComments
+rating
+reason
+
+package sbnz.integracija;
+
+import sbnz.integracija.chefadvisor.events.UserActionEvent;
+import sbnz.integracija.chefadvisor.domain.enumeration.WarningType;
+
+declare SuspiciousUserActionEvent
+    @role(event)
+    userId: Long
+    reason: WarningType
+end
+
+template "spam-protection-rules"
+
+rule "More than @{numberOfComments} comments in an hour from a single user_@{row.rowNumber}"
+    when
+        $a1: UserActionEvent(rating < @{rating}, $userId: userId)
+        Number(intValue >= @{numberOfComments}) from accumulate(
+            $a2: UserActionEvent(
+                this != $a1, 
+                userId == $userId, 
+                this meets[1h] $a1
+            ),
+            count($a2)
+        )
+        not (SuspiciousUserActionEvent(userId == $userId, reason == WarningType.@{reason}))
+    then
+        insert(new SuspiciousUserActionEvent($userId, WarningType.@{reason}));
+end
+
+end template
+
