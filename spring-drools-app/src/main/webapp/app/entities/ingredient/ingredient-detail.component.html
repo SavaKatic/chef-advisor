@@ -28,6 +28,12 @@
                         <a [routerLink]="['/dish', ingredient.dishId, 'view']">{{ ingredient.dishName }}</a>
                     </div>
                 </dd>
+                <dt><span>Ingredient</span></dt>
+                <dd>
+                    <div *ngIf="ingredient.ingredientId">
+                        <a [routerLink]="['/ingredient', ingredient.ingredientId, 'view']">{{ ingredient.ingredientId }}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

@@ -24,6 +24,8 @@ public class IngredientDTO implements Serializable {
     private Long dishId;
 
     private String dishName;
+
+    private Long ingredientId;
     
     public Long getId() {
         return id;
@@ -89,6 +91,14 @@ public class IngredientDTO implements Serializable {
         this.dishName = dishName;
     }
 
+    public Long getIngredientId() {
+        return ingredientId;
+    }
+
+    public void setIngredientId(Long ingredientId) {
+        this.ingredientId = ingredientId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -121,6 +131,7 @@ public class IngredientDTO implements Serializable {
             ", ingredientModelName='" + getIngredientModelName() + "'" +
             ", dishId=" + getDishId() +
             ", dishName='" + getDishName() + "'" +
+            ", ingredientId=" + getIngredientId() +
             "}";
     }
 }

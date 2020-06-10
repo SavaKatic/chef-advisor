@@ -18,11 +18,15 @@ public interface IngredientMapper extends EntityMapper<IngredientDTO, Ingredient
     @Mapping(source = "ingredientModel.name", target = "ingredientModelName")
     @Mapping(source = "dish.id", target = "dishId")
     @Mapping(source = "dish.name", target = "dishName")
+    @Mapping(source = "ingredient.id", target = "ingredientId")
     IngredientDTO toDto(Ingredient ingredient);
 
+    @Mapping(target = "ingredients", ignore = true)
+    @Mapping(target = "removeIngredients", ignore = true)
     @Mapping(source = "userId", target = "user")
     @Mapping(source = "ingredientModelId", target = "ingredientModel")
     @Mapping(source = "dishId", target = "dish")
+    @Mapping(source = "ingredientId", target = "ingredient")
     Ingredient toEntity(IngredientDTO ingredientDTO);
 
     default Ingredient fromId(Long id) {

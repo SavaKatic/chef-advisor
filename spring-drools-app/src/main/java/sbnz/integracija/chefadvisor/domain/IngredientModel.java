@@ -42,7 +42,19 @@ public class IngredientModel implements Serializable {
                inverseJoinColumns = @JoinColumn(name = "ingredient_types_id", referencedColumnName = "id"))
     private Set<IngredientType> ingredientTypes = new HashSet<>();
 
-    @ManyToOne
+    public IngredientModel() {
+    	super();
+    }
+    
+    public IngredientModel(Long id, String name, Double caloriesPerUnit, UnitType unitType) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.caloriesPerUnit = caloriesPerUnit;
+		this.unitType = unitType;
+	}
+
+	@ManyToOne
     @JsonIgnoreProperties("ingredientModels")
     private UnitType unitType;
 

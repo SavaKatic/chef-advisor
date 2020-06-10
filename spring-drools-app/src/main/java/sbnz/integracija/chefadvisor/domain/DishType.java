@@ -30,8 +30,22 @@ public class DishType implements Serializable {
     @OneToMany(mappedBy = "dishType")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Dish> dishes = new HashSet<>();
+    
+    public DishType() {
+    	super();
+    }
+    
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public DishType(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+
+
+
+	// jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }

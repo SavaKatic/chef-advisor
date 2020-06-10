@@ -26,5 +26,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="dish"/>
 
+        <addForeignKeyConstraint baseColumnNames="ingredient_id"
+                                 baseTableName="ingredient"
+                                 constraintName="fk_ingredient_ingredient_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ingredient"/>
+
     </changeSet>
 </databaseChangeLog>

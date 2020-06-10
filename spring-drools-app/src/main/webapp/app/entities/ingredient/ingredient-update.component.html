@@ -40,6 +40,14 @@
                         <option [ngValue]="dishOption.id" *ngFor="let dishOption of dishes; trackBy: trackById">{{ dishOption.name }}</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_ingredient">Ingredient</label>
+                    <select class="form-control" id="field_ingredient" name="ingredient" formControlName="ingredientId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ingredientOption.id" *ngFor="let ingredientOption of ingredients; trackBy: trackById">{{ ingredientOption.id }}</option>
+                    </select>
+                </div>
             </div>
 
             <div>

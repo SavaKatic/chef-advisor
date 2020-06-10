@@ -32,6 +32,7 @@ export class DishUpdateComponent implements OnInit {
     image: [],
     imageContentType: [],
     description: [],
+    averageRating: [],
     users: [],
     dishTypeId: []
   });
@@ -64,6 +65,7 @@ export class DishUpdateComponent implements OnInit {
       image: dish.image,
       imageContentType: dish.imageContentType,
       description: dish.description,
+      averageRating: dish.averageRating,
       users: dish.users,
       dishTypeId: dish.dishTypeId
     });
@@ -108,6 +110,7 @@ export class DishUpdateComponent implements OnInit {
       imageContentType: this.editForm.get(['imageContentType'])!.value,
       image: this.editForm.get(['image'])!.value,
       description: this.editForm.get(['description'])!.value,
+      averageRating: this.editForm.get(['averageRating'])!.value,
       users: this.editForm.get(['users'])!.value,
       dishTypeId: this.editForm.get(['dishTypeId'])!.value
     };

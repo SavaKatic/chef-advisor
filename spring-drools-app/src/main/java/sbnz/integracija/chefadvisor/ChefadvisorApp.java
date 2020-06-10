@@ -1,11 +1,23 @@
 package sbnz.integracija.chefadvisor;
 
-import sbnz.integracija.chefadvisor.config.ApplicationProperties;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
-import io.github.jhipster.config.DefaultProfileUtil;
-import io.github.jhipster.config.JHipsterConstants;
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
+import org.drools.template.ObjectDataCompiler;
+import org.kie.api.KieServices;
+import org.kie.api.builder.KieScanner;
+import org.kie.api.io.ResourceType;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+import org.kie.internal.utils.KieHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -13,18 +25,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.kie.api.KieServices;
-import org.kie.api.builder.KieScanner;
-import org.kie.api.runtime.KieContainer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.ApplicationContext;
-import javax.annotation.PostConstruct;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Collection;
+
+import io.github.jhipster.config.DefaultProfileUtil;
+import io.github.jhipster.config.JHipsterConstants;
+import sbnz.integracija.chefadvisor.config.ApplicationProperties;
+import sbnz.integracija.chefadvisor.facts.AlarmTriggerTemplateModel;
+import sbnz.integracija.chefadvisor.facts.SpamDetectionTemplateModel;
 
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
@@ -113,6 +123,37 @@ public class ChefadvisorApp {
       KieScanner kScanner = ks.newKieScanner(kContainer);
       kScanner.start(10_000);
       return kContainer;
+    }
+
+    @Bean
+    public KieSession cepKieSession() {
+        ObjectDataCompiler converter = new ObjectDataCompiler();
+
+    	InputStream spamDetectionTemplate = getClass().getResourceAsStream("/sbnz/integracija/spam-protection.drt");
+        
+        List<SpamDetectionTemplateModel> spamDetectionData = new ArrayList<SpamDetectionTemplateModel>();
+        
+        spamDetectionData.add(new SpamDetectionTemplateModel(9, 6, "SPAMMING_COMMENTS"));
+        spamDetectionData.add(new SpamDetectionTemplateModel(2, 3, "SPAMMING_BAD_RATING"));
+        
+        String spamDetectionDRL = converter.compile(spamDetectionData, spamDetectionTemplate);
+        
+        System.out.println(spamDetectionDRL);
+        
+        KieHelper kieHelper = new KieHelper();
+        kieHelper.addContent(spamDetectionDRL, ResourceType.DRL);
+
+        InputStream alarmTriggerTemplate = getClass().getResourceAsStream("/sbnz/integracija/alarm.drt");
+        
+        List<AlarmTriggerTemplateModel> alarmTemplateData = new ArrayList<AlarmTriggerTemplateModel>();
+        
+        alarmTemplateData.add(new AlarmTriggerTemplateModel(2));
+        
+        String alarmTriggerDRL = converter.compile(alarmTemplateData, alarmTriggerTemplate);
+        
+        kieHelper.addContent(alarmTriggerDRL, ResourceType.DRL);
+
+        return kieHelper.build().newKieSession();
     }
   
 }

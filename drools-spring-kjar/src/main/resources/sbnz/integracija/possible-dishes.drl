@@ -1,30 +1,71 @@
 package sbnz.integracija;
 
-import sbnz.integracija.chefadvisor.facts.SearchFact
+import sbnz.integracija.chefadvisor.facts.SearchInputFact
+import sbnz.integracija.chefadvisor.facts.SearchResultFact
 import sbnz.integracija.chefadvisor.domain.Dish
 import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory
 import sbnz.integracija.chefadvisor.domain.Ingredient
-import java.util.Set
 
-global Set<Dish> possibleDishes;
 
-rule "Find Dishes - non strict mode"
-	agenda-group "search"
-    when
-        $s: SearchFact( strict == false )
-        $d: Dish( category == $s.category && dishType.name.equals($s.type) )
-    then
-    	possibleDishes.add($d);
-end
-
-rule "Find Dishes - strict mode"
+rule "Find Dishes - remove based on category"
 	agenda-group "search"
 	when
-        $s: SearchFact( strict == true, $fridge: fridge )
-       	$userIngredient: Ingredient() from $fridge
-        $d: Dish( category == $s.category && dishType.name.equals($s.type), $requiredIngredients: ingredients )
-        exists ( Ingredient( ingredientModel.id == $userIngredient.ingredientModel.id && amount <= $userIngredient.amount ) from $requiredIngredients ) 
-    then
-    	possibleDishes.add($d);
+        $sif: SearchInputFact($dishes: dishes)
+		$d: Dish( category != $sif.category ) from $dishes
+	then
+		$sif.getDishes().remove($d);
+		update($sif);
 end
 
+rule "Find Dishes - remove based on type"
+	agenda-group "search"
+	when
+		$sif: SearchInputFact($dishes: dishes)
+		$d: Dish( dishType.name.equals($sif.type) == false ) from $dishes
+	then
+		$sif.getDishes().remove($d);
+		update($sif);
+end
+
+rule "Find Dishes - remove strict non-matches"
+	salience 1
+	agenda-group "search"
+	when
+		$sif: SearchInputFact( strict == true, $dishes: dishes)
+	    $d: Dish( $requiredIngredients: ingredients ) from $dishes
+	    $requiredIngredient: Ingredient() from $requiredIngredients
+	    SearchInputFact( $requiredIngredient not memberOf fridge )
+	then
+	    $sif.getDishes().remove($d);
+	    update($sif);
+end
+
+
+rule "Adjust dish ingredient calories"
+	agenda-group "search"
+	when
+		SearchInputFact( strict == true, $minimumCalories: minimumCalories, $dishes: dishes)
+		$d: Dish( $ingredients: ingredients ) from $dishes
+		Number(intValue < $minimumCalories) from accumulate(
+							Ingredient(
+								$c: ingredientModel.caloriesPerUnit,
+								$a: amount
+							) from $ingredients,
+							sum($a * $c)
+					)
+		$i: Ingredient() from $ingredients
+	then
+		$d.increaseIngredients();
+end
+
+rule "Sort Dishes"
+	agenda-group "sort"
+	when 
+		$sif: SearchInputFact( $dishes: dishes )
+		$srf: SearchResultFact($sortedDishes: sortedDishes)
+		$dish: Dish( this not memberOf $sortedDishes, $averageRating: averageRating ) from $dishes
+		not(exists( Dish( this != $dish && this not memberOf $sortedDishes && averageRating > $averageRating ) from $dishes))
+	then
+		$srf.getSortedDishes().add($dish);
+		update($srf);
+end

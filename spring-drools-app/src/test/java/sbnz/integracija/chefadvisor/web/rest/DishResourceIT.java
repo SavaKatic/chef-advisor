@@ -56,6 +56,9 @@ public class DishResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final Double DEFAULT_AVERAGE_RATING = 1D;
+    private static final Double UPDATED_AVERAGE_RATING = 2D;
+
     @Autowired
     private DishRepository dishRepository;
 
@@ -91,7 +94,8 @@ public class DishResourceIT {
             .category(DEFAULT_CATEGORY)
             .image(DEFAULT_IMAGE)
             .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
-            .description(DEFAULT_DESCRIPTION);
+            .description(DEFAULT_DESCRIPTION)
+            .averageRating(DEFAULT_AVERAGE_RATING);
         return dish;
     }
     /**
@@ -106,7 +110,8 @@ public class DishResourceIT {
             .category(UPDATED_CATEGORY)
             .image(UPDATED_IMAGE)
             .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .averageRating(UPDATED_AVERAGE_RATING);
         return dish;
     }
 
@@ -136,6 +141,7 @@ public class DishResourceIT {
         assertThat(testDish.getImage()).isEqualTo(DEFAULT_IMAGE);
         assertThat(testDish.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
         assertThat(testDish.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testDish.getAverageRating()).isEqualTo(DEFAULT_AVERAGE_RATING);
     }
 
     @Test
@@ -174,7 +180,8 @@ public class DishResourceIT {
             .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY.toString())))
             .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].averageRating").value(hasItem(DEFAULT_AVERAGE_RATING.doubleValue())));
     }
     
     @SuppressWarnings({"unchecked"})
@@ -212,7 +219,8 @@ public class DishResourceIT {
             .andExpect(jsonPath("$.category").value(DEFAULT_CATEGORY.toString()))
             .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.averageRating").value(DEFAULT_AVERAGE_RATING.doubleValue()));
     }
 
     @Test
@@ -240,7 +248,8 @@ public class DishResourceIT {
             .category(UPDATED_CATEGORY)
             .image(UPDATED_IMAGE)
             .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .averageRating(UPDATED_AVERAGE_RATING);
         DishDTO dishDTO = dishMapper.toDto(updatedDish);
 
         restDishMockMvc.perform(put("/api/dishes")
@@ -257,6 +266,7 @@ public class DishResourceIT {
         assertThat(testDish.getImage()).isEqualTo(UPDATED_IMAGE);
         assertThat(testDish.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
         assertThat(testDish.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testDish.getAverageRating()).isEqualTo(UPDATED_AVERAGE_RATING);
     }
 
     @Test

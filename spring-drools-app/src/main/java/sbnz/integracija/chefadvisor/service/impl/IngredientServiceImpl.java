@@ -87,7 +87,7 @@ public class IngredientServiceImpl implements IngredientService {
         log.debug("Request to delete Ingredient : {}", id);
         ingredientRepository.deleteById(id);
     }
-    
+        
     /**
      * Get all by user is current user
      * 

@@ -27,6 +27,7 @@
                     <th scope="col"  jhiSortBy="userLogin"><span>User</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="ingredientModelName"><span>Ingredient Model</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="dishName"><span>Dish</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="ingredientId"><span>Ingredient</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -45,6 +46,11 @@
                     <td>
                         <div *ngIf="ingredient.dishId">
                             <a [routerLink]="['/dish', ingredient.dishId , 'view']" >{{ ingredient.dishName }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="ingredient.ingredientId">
+                            <a [routerLink]="['/ingredient', ingredient.ingredientId , 'view']" >{{ ingredient.ingredientId }}</a>
                         </div>
                     </td>
                     <td class="text-right">

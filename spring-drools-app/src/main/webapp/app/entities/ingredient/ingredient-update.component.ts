@@ -14,7 +14,7 @@ import { IngredientModelService } from 'app/entities/ingredient-model/ingredient
 import { IDish } from 'app/shared/model/dish.model';
 import { DishService } from 'app/entities/dish/dish.service';
 
-type SelectableEntity = IUser | IIngredientModel | IDish;
+type SelectableEntity = IUser | IIngredientModel | IDish | IIngredient;
 
 @Component({
   selector: 'jhi-ingredient-update',
@@ -25,13 +25,15 @@ export class IngredientUpdateComponent implements OnInit {
   users: IUser[] = [];
   ingredientmodels: IIngredientModel[] = [];
   dishes: IDish[] = [];
+  ingredients: IIngredient[] = [];
 
   editForm = this.fb.group({
     id: [],
     amount: [],
     userId: [],
     ingredientModelId: [],
-    dishId: []
+    dishId: [],
+    ingredientId: []
   });
 
   constructor(
@@ -52,6 +54,8 @@ export class IngredientUpdateComponent implements OnInit {
       this.ingredientModelService.query().subscribe((res: HttpResponse<IIngredientModel[]>) => (this.ingredientmodels = res.body || []));
 
       this.dishService.query().subscribe((res: HttpResponse<IDish[]>) => (this.dishes = res.body || []));
+
+      this.ingredientService.query().subscribe((res: HttpResponse<IIngredient[]>) => (this.ingredients = res.body || []));
     });
   }
 
@@ -61,7 +65,8 @@ export class IngredientUpdateComponent implements OnInit {
       amount: ingredient.amount,
       userId: ingredient.userId,
       ingredientModelId: ingredient.ingredientModelId,
-      dishId: ingredient.dishId
+      dishId: ingredient.dishId,
+      ingredientId: ingredient.ingredientId
     });
   }
 
@@ -86,7 +91,8 @@ export class IngredientUpdateComponent implements OnInit {
       amount: this.editForm.get(['amount'])!.value,
       userId: this.editForm.get(['userId'])!.value,
       ingredientModelId: this.editForm.get(['ingredientModelId'])!.value,
-      dishId: this.editForm.get(['dishId'])!.value
+      dishId: this.editForm.get(['dishId'])!.value,
+      ingredientId: this.editForm.get(['ingredientId'])!.value
     };
   }
 

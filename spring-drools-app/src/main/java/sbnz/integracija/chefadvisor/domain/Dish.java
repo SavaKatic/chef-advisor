@@ -44,6 +44,9 @@ public class Dish implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "average_rating")
+    private Double averageRating;
+
     @OneToMany(mappedBy = "dish")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Ingredient> ingredients = new HashSet<>();
@@ -62,8 +65,24 @@ public class Dish implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("dishes")
     private DishType dishType;
+    
+    public Dish() {
+    	super();
+    }
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Dish(Long id, String name, DishCategory category, String description,
+			Double averageRating, Set<Ingredient> ingredients, DishType dishType) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.category = category;
+		this.description = description;
+		this.averageRating = averageRating;
+		this.ingredients = ingredients;
+		this.dishType = dishType;
+	}
+
+	// jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -135,6 +154,19 @@ public class Dish implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public Dish averageRating(Double averageRating) {
+        this.averageRating = averageRating;
+        return this;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
 
     public Set<Ingredient> getIngredients() {
@@ -249,8 +281,10 @@ public class Dish implements Serializable {
             ", image='" + getImage() + "'" +
             ", imageContentType='" + getImageContentType() + "'" +
             ", description='" + getDescription() + "'" +
+            ", averageRating=" + getAverageRating() +
             "}";
     }
+
     
     public Double getCalories() {
       double calories = 0;
