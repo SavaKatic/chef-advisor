@@ -65,8 +65,24 @@ public class Dish implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("dishes")
     private DishType dishType;
+    
+    public Dish() {
+    	super();
+    }
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Dish(Long id, String name, DishCategory category, String description,
+			Double averageRating, Set<Ingredient> ingredients, DishType dishType) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.category = category;
+		this.description = description;
+		this.averageRating = averageRating;
+		this.ingredients = ingredients;
+		this.dishType = dishType;
+	}
+
+	// jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }

@@ -47,8 +47,20 @@ public class Ingredient implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("ingredients")
     private Ingredient ingredient;
+    
+    public Ingredient() {
+    	super();
+    }
+    
+    public Ingredient(Long id, Double amount, IngredientModel ingredientModel, Dish dish) {
+		super();
+		this.id = id;
+		this.amount = amount;
+		this.ingredientModel = ingredientModel;
+		this.dish = dish;
+	}
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+	// jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }

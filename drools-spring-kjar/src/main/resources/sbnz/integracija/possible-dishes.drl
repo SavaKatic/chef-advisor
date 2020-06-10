@@ -11,7 +11,7 @@ rule "Find Dishes - remove based on category"
 	agenda-group "search"
 	when
         $sif: SearchInputFact($dishes: dishes)
-		$d: Dish( category != $sif.category )
+		$d: Dish( category != $sif.category ) from $dishes
 	then
 		$sif.getDishes().remove($d);
 		update($sif);
@@ -21,7 +21,7 @@ rule "Find Dishes - remove based on type"
 	agenda-group "search"
 	when
 		$sif: SearchInputFact($dishes: dishes)
-		$d: Dish( dishType.name.equals($sif.type) )
+		$d: Dish( dishType.name.equals($sif.type) == false ) from $dishes
 	then
 		$sif.getDishes().remove($d);
 		update($sif);
