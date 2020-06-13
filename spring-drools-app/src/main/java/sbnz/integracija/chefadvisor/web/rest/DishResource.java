@@ -1,27 +1,43 @@
 package sbnz.integracija.chefadvisor.web.rest;
 
-import sbnz.integracija.chefadvisor.service.DishService;
-import sbnz.integracija.chefadvisor.web.rest.errors.BadRequestAlertException;
-import sbnz.integracija.chefadvisor.service.dto.DishDTO;
-
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import sbnz.integracija.chefadvisor.domain.User;
+import sbnz.integracija.chefadvisor.repository.UserRepository;
+import sbnz.integracija.chefadvisor.service.DishService;
+import sbnz.integracija.chefadvisor.service.IngredientService;
+import sbnz.integracija.chefadvisor.service.dto.DishDTO;
+import sbnz.integracija.chefadvisor.service.dto.UserDTO;
+import sbnz.integracija.chefadvisor.service.mapper.DishMapper;
+import sbnz.integracija.chefadvisor.service.mapper.UserMapper;
+import sbnz.integracija.chefadvisor.web.rest.errors.BadRequestAlertException;
 
 /**
  * REST controller for managing {@link sbnz.integracija.chefadvisor.domain.Dish}.
@@ -38,9 +54,21 @@ public class DishResource {
     private String applicationName;
 
     private final DishService dishService;
+    
+    @Autowired
+    private UserMapper userMapper;
+    
+    @Autowired
+    private DishMapper dishMapper;
+    
+    private final UserRepository userRepository;
+    
+    private final IngredientService ingredientService;
 
-    public DishResource(DishService dishService) {
+    public DishResource(DishService dishService, UserRepository userRepository, IngredientService ingredientService) {
         this.dishService = dishService;
+        this.userRepository = userRepository;
+        this.ingredientService = ingredientService;
     }
 
     /**
@@ -60,6 +88,19 @@ public class DishResource {
         return ResponseEntity.created(new URI("/api/dishes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+    
+    
+    @PostMapping("/dishes/addToHistory")
+    public ResponseEntity<Void> addToHistory(@RequestBody DishDTO dishDTO, @AuthenticationPrincipal UserDetails loggedUser) {
+    	User user = userRepository.findOneByLogin(loggedUser.getUsername()).orElse(null);
+
+        UserDTO userDTO = userMapper.userToUserDTO(user);
+        dishDTO.users.add(userDTO);
+        dishService.save(dishDTO);
+        
+        ingredientService.adjustFridgeIngredients(dishMapper.toEntity(dishDTO));
+        return ResponseEntity.noContent().build();
     }
 
     /**

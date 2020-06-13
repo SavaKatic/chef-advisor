@@ -85,4 +85,5 @@ public class CalorieConfigurationService {
     public CalorieConfiguration findByUserIsCurrentUser() {
     	return this.calorieConfigurationRepository.findByUserIsCurrentUser().get(0);
     }
+    
 }

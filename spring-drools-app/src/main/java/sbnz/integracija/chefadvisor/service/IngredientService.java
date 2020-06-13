@@ -1,5 +1,6 @@
 package sbnz.integracija.chefadvisor.service;
 
+import sbnz.integracija.chefadvisor.domain.Dish;
 import sbnz.integracija.chefadvisor.service.dto.IngredientDTO;
 
 import org.springframework.data.domain.Page;
@@ -48,4 +49,6 @@ public interface IngredientService {
      * Get all by current user
      * */
     Page<IngredientDTO> findByUserIsCurrentUser(Pageable pageable);
+    
+    void adjustFridgeIngredients(Dish dish);
 }

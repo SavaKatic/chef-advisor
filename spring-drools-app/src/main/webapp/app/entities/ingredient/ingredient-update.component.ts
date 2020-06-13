@@ -13,6 +13,7 @@ import { IIngredientModel } from 'app/shared/model/ingredient-model.model';
 import { IngredientModelService } from 'app/entities/ingredient-model/ingredient-model.service';
 import { IDish } from 'app/shared/model/dish.model';
 import { DishService } from 'app/entities/dish/dish.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 type SelectableEntity = IUser | IIngredientModel | IDish | IIngredient;
 
@@ -42,6 +43,7 @@ export class IngredientUpdateComponent implements OnInit {
     protected ingredientModelService: IngredientModelService,
     protected dishService: DishService,
     protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService,
     private fb: FormBuilder
   ) {}
 
@@ -77,6 +79,13 @@ export class IngredientUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const ingredient = this.createFromForm();
+    if (!ingredient.userLogin) {
+      ingredient.userLogin = this.accountService.getUsername();
+      const userObj = this.users.find((user) => {
+        return user.login === ingredient.userLogin;
+      });
+      ingredient.userId = userObj?.id;
+    }
     if (ingredient.id !== undefined) {
       this.subscribeToSaveResponse(this.ingredientService.update(ingredient));
     } else {

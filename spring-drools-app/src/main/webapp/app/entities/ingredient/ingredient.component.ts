@@ -10,6 +10,7 @@ import { IIngredient } from 'app/shared/model/ingredient.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { IngredientService } from './ingredient.service';
 import { IngredientDeleteDialogComponent } from './ingredient-delete-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-ingredient',
@@ -30,7 +31,8 @@ export class IngredientComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected accountService: AccountService
   ) {}
 
   loadPage(page?: number): void {
@@ -50,6 +52,14 @@ export class IngredientComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(data => {
+      if (this.accountService.hasAnyAuthority('ROLE_USER')) {
+       // eslint-disable-next-line no-console
+        console.log(data);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        this.ingredients = data.ingredients;
+        return;
+      }
       this.page = data.pagingParams.page;
       this.ascending = data.pagingParams.ascending;
       this.predicate = data.pagingParams.predicate;
@@ -90,14 +100,14 @@ export class IngredientComponent implements OnInit, OnDestroy {
   protected onSuccess(data: IIngredient[] | null, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
-    this.router.navigate(['/ingredient'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
-    });
-    this.ingredients = data || [];
+    // this.router.navigate(['/ingredient'], {
+    //   queryParams: {
+    //     page: this.page,
+    //     size: this.itemsPerPage,
+    //     sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
+    //   }
+    // });
+    // this.ingredients = data || [];
   }
 
   protected onError(): void {

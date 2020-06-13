@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sbnz.integracija.chefadvisor.domain.Dish;
 import sbnz.integracija.chefadvisor.domain.Ingredient;
 import sbnz.integracija.chefadvisor.repository.IngredientRepository;
 import sbnz.integracija.chefadvisor.service.IngredientService;
@@ -104,5 +105,22 @@ public class IngredientServiceImpl implements IngredientService {
         int end = (start + pageable.getPageSize()) > ingredientList.size() ? ingredientList.size() : (start + pageable.getPageSize());
         Page<Ingredient> pages = new PageImpl<Ingredient>(ingredientList.subList(start, end), pageable, ingredientList.size());
         return pages.map(ingredientMapper::toDto);
+    }
+    
+    public void adjustFridgeIngredients(Dish dish) {
+        List<Ingredient> fridge = ingredientRepository.findByUserIsCurrentUser();
+        for(Ingredient userIngredient: fridge) {
+        	for (Ingredient requiredIngredient: dish.getIngredients()) {
+        		if (userIngredient.equals(requiredIngredient)) {
+        			if(requiredIngredient.getAmount() < userIngredient.getAmount()) {
+        				Double newAmount = userIngredient.getAmount() - requiredIngredient.getAmount();
+            			userIngredient.setAmount(newAmount);
+            			ingredientRepository.save(userIngredient);
+        			} else {
+        		        ingredientRepository.deleteById(userIngredient.getId());
+        			}
+        		}
+        	}
+        }
     }
 }

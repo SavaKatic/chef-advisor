@@ -2,7 +2,7 @@
     <h2 id="page-heading">
         <span>Ingredients</span>
 
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-ingredient" [routerLink]="['/ingredient/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-ingredient" [routerLink]="['/ingredient/new']" *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <fa-icon icon="plus"></fa-icon>
             <span>
             Create a new Ingredient
@@ -53,7 +53,7 @@
                             <a [routerLink]="['/ingredient', ingredient.ingredientId , 'view']" >{{ ingredient.ingredientId }}</a>
                         </div>
                     </td>
-                    <td class="text-right">
+                    <td class="text-right" *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <div class="btn-group">
                             <button type="submit"
                                     [routerLink]="['/ingredient', ingredient.id, 'view']"

@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import sbnz.integracija.chefadvisor.domain.User;
 import sbnz.integracija.chefadvisor.events.UserActionEvent;
+import sbnz.integracija.chefadvisor.repository.UserRepository;
 import sbnz.integracija.chefadvisor.service.RatingService;
 import sbnz.integracija.chefadvisor.service.dto.RatingDTO;
 import sbnz.integracija.chefadvisor.web.rest.errors.BadRequestAlertException;
@@ -44,11 +48,14 @@ public class RatingResource {
 
     private final RatingService ratingService;
     
+    private final UserRepository userRepository;
+    
     @Autowired
     private KieSession cepKieSession;
 
-    public RatingResource(RatingService ratingService) {
+    public RatingResource(RatingService ratingService, UserRepository userRepository) {
         this.ratingService = ratingService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -59,10 +66,16 @@ public class RatingResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/ratings")
-    public ResponseEntity<RatingDTO> createRating(@RequestBody RatingDTO ratingDTO) throws URISyntaxException {
+    public ResponseEntity<RatingDTO> createRating(@RequestBody RatingDTO ratingDTO, @AuthenticationPrincipal UserDetails loggedUser) throws URISyntaxException {
         log.debug("REST request to save Rating : {}", ratingDTO);
         if (ratingDTO.getId() != null) {
             throw new BadRequestAlertException("A new rating cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (ratingDTO.getUserId() == null) {
+        	User user = userRepository.findOneByLogin(loggedUser.getUsername()).orElse(null);
+
+        	ratingDTO.setUserLogin(loggedUser.getUsername());
+        	ratingDTO.setUserId(user.getId());
         }
         RatingDTO result = ratingService.save(ratingDTO);
         this.cepKieSession.insert(new UserActionEvent(result.getUserId(), Double.parseDouble(result.getRating().toString())));

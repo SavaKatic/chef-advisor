@@ -23,7 +23,7 @@
                            formControlName="rating"/>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" *jhiHasAnyAuthority="'ROLE_ADMIN'">
                     <label class="form-control-label" for="field_user">User</label>
                     <select class="form-control" id="field_user" name="user" formControlName="userId">
                         <option [ngValue]="null"></option>
@@ -31,7 +31,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" *jhiHasAnyAuthority="'ROLE_ADMIN'">
                     <label class="form-control-label" for="field_dish">Dish</label>
                     <select class="form-control" id="field_dish" name="dish" formControlName="dishId">
                         <option [ngValue]="null"></option>

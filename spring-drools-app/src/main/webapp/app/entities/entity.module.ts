@@ -9,6 +9,18 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./ingredient/ingredient.module').then(m => m.ChefadvisorIngredientModule)
       },
       {
+        path: 'calorie-information',
+        loadChildren: () => import('./calorie-information/calorie-information.module').then(m => m.ChefadvisorCalorieInformationModule)
+      },
+      {
+        path: 'search-dishes',
+        loadChildren: () => import('./search-dishes/search-dishes.module').then(m => m.ChefadvisorSearchDishesModule)
+      },
+      {
+        path: 'my-dishes',
+        loadChildren: () => import('./my-dishes/my-dishes.module').then(m => m.ChefadvisorMyDishesModule)
+      },
+      {
         path: 'dish-type',
         loadChildren: () => import('./dish-type/dish-type.module').then(m => m.ChefadvisorDishTypeModule)
       },

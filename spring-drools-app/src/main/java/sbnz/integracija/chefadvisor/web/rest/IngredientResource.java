@@ -1,27 +1,35 @@
 package sbnz.integracija.chefadvisor.web.rest;
 
-import sbnz.integracija.chefadvisor.service.IngredientService;
-import sbnz.integracija.chefadvisor.web.rest.errors.BadRequestAlertException;
-import sbnz.integracija.chefadvisor.service.dto.IngredientDTO;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import sbnz.integracija.chefadvisor.service.IngredientService;
+import sbnz.integracija.chefadvisor.service.dto.IngredientDTO;
+import sbnz.integracija.chefadvisor.web.rest.errors.BadRequestAlertException;
 
 /**
  * REST controller for managing {@link sbnz.integracija.chefadvisor.domain.Ingredient}.
@@ -90,9 +98,16 @@ public class IngredientResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ingredients in body.
      */
     @GetMapping("/ingredients")
-    public ResponseEntity<List<IngredientDTO>> getAllIngredients(Pageable pageable) {
+    public ResponseEntity<List<IngredientDTO>> getIngredients(Pageable pageable, HttpServletRequest request) {
         log.debug("REST request to get a page of Ingredients");
-        Page<IngredientDTO> page = ingredientService.findAll(pageable);
+        Page<IngredientDTO> page = null;
+        if (request.isUserInRole("ROLE_ADMIN")) {
+        	page = ingredientService.findAll(pageable);
+        }
+        else {
+        	System.out.println(request.isUserInRole("ROLE_USER"));
+        	page = ingredientService.findByUserIsCurrentUser(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
