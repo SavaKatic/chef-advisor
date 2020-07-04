@@ -1,5 +1,6 @@
 template header
 numberOfSuspiciousActions
+warningMessage
 
 
 package sbnz.integracija;
@@ -20,15 +21,16 @@ end
 template "alarm-rules"
 
 rule "More than @{numberOfSuspiciousActions} suspicious user actions trigger a potential spammer alarm_@{row.rowNumber}"
+	salience $k
     when
         SuspiciousUserActionEvent($userId: userId)
         not (AlarmTriggered(userId == $userId))
-        Number(intValue >= @{numberOfSuspiciousActions}) from accumulate(
+        $k: Number(intValue >= @{numberOfSuspiciousActions}) from accumulate(
             $s: SuspiciousUserActionEvent(userId == $userId),
             count($s)
         )
     then
-        System.out.println("WARNING: Suspicious user!" + $userId);
+        System.out.println("@{warningMessage}" + $userId);
         insert(new AlarmTriggered($userId));
 end
 

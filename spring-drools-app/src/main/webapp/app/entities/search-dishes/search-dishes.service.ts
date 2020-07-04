@@ -48,4 +48,8 @@ export class SearchDishesService {
   findMissing(dishId: number): Observable<HttpResponse<IIngredient[]>> {
     return this.http.get<IIngredient[]>(`api/search-ingredients?dishId=${dishId}`, { observe: 'response' });
   }
+
+  findAll(dishId: number): Observable<HttpResponse<IIngredient[]>> {
+    return this.http.get<IIngredient[]>(`api/ingredients/dish/${dishId}`, { observe: 'response' });
+  }
 }

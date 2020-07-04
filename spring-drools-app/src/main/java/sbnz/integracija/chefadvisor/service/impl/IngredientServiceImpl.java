@@ -123,4 +123,13 @@ public class IngredientServiceImpl implements IngredientService {
         	}
         }
     }
+    
+    public Page<IngredientDTO> findByDish(Pageable pageable, Long id) {
+    	log.debug("Request to get all Ingredients by dish id");
+        List<Ingredient> ingredientList = ingredientRepository.findByDish(id);
+        int start = (int) pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > ingredientList.size() ? ingredientList.size() : (start + pageable.getPageSize());
+        Page<Ingredient> pages = new PageImpl<Ingredient>(ingredientList.subList(start, end), pageable, ingredientList.size());
+        return pages.map(ingredientMapper::toDto);
+    }
 }

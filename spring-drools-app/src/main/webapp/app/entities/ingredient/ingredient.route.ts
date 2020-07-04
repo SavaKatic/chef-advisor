@@ -12,6 +12,7 @@ import { IngredientService } from './ingredient.service';
 import { IngredientComponent } from './ingredient.component';
 import { IngredientDetailComponent } from './ingredient-detail.component';
 import { IngredientUpdateComponent } from './ingredient-update.component';
+import { SearchDishesService } from '../search-dishes/search-dishes.service';
 
 @Injectable({ providedIn: 'root' })
 export class IngredientResolve implements Resolve<IIngredient> {
@@ -34,6 +35,25 @@ export class IngredientResolve implements Resolve<IIngredient> {
     return of(new Ingredient());
   }
 }
+
+@Injectable({ providedIn: 'root' })
+export class FridgeResolve implements Resolve<IIngredient[]> {
+  constructor(private service: IngredientService, private router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): any {
+    return this.service.getFridge().pipe(
+      flatMap((ingredients: HttpResponse<Ingredient[]>) => {
+        if (ingredients.body) {
+          return of(ingredients.body);
+        } else {
+          this.router.navigate(['404']);
+          return EMPTY;
+        }
+      })
+    );
+  }
+}
+
 
 export const ingredientRoute: Routes = [
   {
@@ -78,6 +98,18 @@ export const ingredientRoute: Routes = [
     component: IngredientUpdateComponent,
     resolve: {
       ingredient: IngredientResolve
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'Ingredients'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'fridge',
+    component: IngredientComponent,
+    resolve: {
+      ingredient: FridgeResolve
     },
     data: {
       authorities: [Authority.USER],

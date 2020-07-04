@@ -51,4 +51,6 @@ public interface IngredientService {
     Page<IngredientDTO> findByUserIsCurrentUser(Pageable pageable);
     
     void adjustFridgeIngredients(Dish dish);
+    
+    Page<IngredientDTO> findByDish(Pageable pageable, Long id);
 }

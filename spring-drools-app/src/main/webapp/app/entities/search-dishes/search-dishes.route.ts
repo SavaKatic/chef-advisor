@@ -35,6 +35,28 @@ export class MissingIngredientsResolve implements Resolve<IIngredient[]> {
   }
 }
 
+@Injectable({ providedIn: 'root' })
+export class AllIngredientsResolve implements Resolve<IIngredient[]> {
+  constructor(private service: SearchDishesService, private router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IIngredient[]> | Observable<never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.findAll(id).pipe(
+        flatMap((ingredients: HttpResponse<Ingredient[]>) => {
+          if (ingredients.body) {
+            return of(ingredients.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
+    }
+    return of([]);
+  }
+}
+
 export const searchDishesRoute: Routes = [
   {
     path: '',
@@ -55,6 +77,20 @@ export const searchDishesRoute: Routes = [
     resolve: {
       pagingParams: JhiResolvePagingParams,
       ingredients: MissingIngredientsResolve
+    },
+    data: {
+      authorities: [Authority.USER],
+      defaultSort: 'id,asc',
+      pageTitle: 'Dishes'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/all-ingredients',
+    component: IngredientComponent,
+    resolve: {
+      pagingParams: JhiResolvePagingParams,
+      ingredients: AllIngredientsResolve
     },
     data: {
       authorities: [Authority.USER],

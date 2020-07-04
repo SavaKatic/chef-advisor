@@ -25,6 +25,7 @@ export class IngredientComponent implements OnInit, OnDestroy {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  isFridge = false;
 
   constructor(
     protected ingredientService: IngredientService,
@@ -54,10 +55,13 @@ export class IngredientComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe(data => {
       if (this.accountService.hasAnyAuthority('ROLE_USER')) {
        // eslint-disable-next-line no-console
-        console.log(data);
+        // this.ingredientService.getFridge().subscribe((ingredients: any) => {
+        //   this.ingredients = ingredients;
+        //   return;
+        // })
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
-        this.ingredients = data.ingredients;
+        this.ingredients = data.ingredients || data.ingredient;
         return;
       }
       this.page = data.pagingParams.page;
@@ -67,6 +71,9 @@ export class IngredientComponent implements OnInit, OnDestroy {
       this.loadPage();
     });
     this.registerChangeInIngredients();
+    if(this.router.url === '/ingredient/fridge') {
+      this.isFridge = true;
+    }
   }
 
   ngOnDestroy(): void {

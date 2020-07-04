@@ -2,7 +2,7 @@
   <h2 id="page-heading">
       <span>Search Dishes</span>
 
-      <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-dish" [routerLink]="['/dish/new']">
+      <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-dish" [routerLink]="['/dish/new']" *jhiHasAnyAuthority="'ROLE_ADMIN'">
           <fa-icon icon="plus"></fa-icon>
           <span>
           Create a new Dish
@@ -89,7 +89,17 @@
                           <span class="d-none d-md-inline">See missing</span>
                       </button>
                     </div>
-                </td>
+                  </td>
+                  <td class="text-right" *ngIf="!isSearchApplied">
+                    <div class="btn-group">
+                        
+                      <button type="submit"
+                              [routerLink]="['/search-dishes', dish.id, 'all-ingredients']"
+                              class="btn btn-primary btn-sm">
+                          <span class="d-none d-md-inline">Details</span>
+                      </button>
+                    </div>
+                  </td>
               </tr>
           </tbody>
       </table>
