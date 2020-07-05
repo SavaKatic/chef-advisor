@@ -1,0 +1,25 @@
+{
+    "name": "AlarmTriggerTemplate",
+    "fields": [
+        {
+            "fieldName": "numberOfSuspiciousActions",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "warningMessage",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200704235300",
+    "entityTableName": "alarm_trigger_template",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

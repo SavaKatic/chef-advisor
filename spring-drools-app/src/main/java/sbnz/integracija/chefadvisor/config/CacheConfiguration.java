@@ -62,6 +62,9 @@ public class CacheConfiguration {
             createCache(cm, sbnz.integracija.chefadvisor.domain.Rating.class.getName() + ".dishes");
             createCache(cm, sbnz.integracija.chefadvisor.domain.Dish.class.getName() + ".ratings");
             createCache(cm, sbnz.integracija.chefadvisor.domain.Ingredient.class.getName() + ".ingredients");
+            createCache(cm, sbnz.integracija.chefadvisor.domain.AlarmTriggerTemplate.class.getName());
+            createCache(cm, sbnz.integracija.chefadvisor.domain.SpamDetectionTemplate.class.getName());
+            createCache(cm, sbnz.integracija.chefadvisor.domain.Alarm.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

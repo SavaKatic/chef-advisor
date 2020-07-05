@@ -35,6 +35,8 @@ import io.github.jhipster.config.JHipsterConstants;
 import sbnz.integracija.chefadvisor.config.ApplicationProperties;
 import sbnz.integracija.chefadvisor.facts.AlarmTriggerTemplateModel;
 import sbnz.integracija.chefadvisor.facts.SpamDetectionTemplateModel;
+import sbnz.integracija.chefadvisor.repository.AlarmTriggerTemplateRepository;
+import sbnz.integracija.chefadvisor.repository.SpamDetectionTemplateRepository;
 
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
@@ -45,10 +47,18 @@ public class ChefadvisorApp {
     private static final Logger log = LoggerFactory.getLogger(ChefadvisorApp.class);
 
     private final Environment env;
+    
+    private AlarmTriggerTemplateRepository alarmTriggerTemplateRepository;
+    
+    private SpamDetectionTemplateRepository spamDetectionTemplateRepository;
 
-    public ChefadvisorApp(Environment env) {
+    public ChefadvisorApp(Environment env, AlarmTriggerTemplateRepository alarmTriggerTemplateRepository, SpamDetectionTemplateRepository spamDetectionTemplateRepository) {
         this.env = env;
+        this.alarmTriggerTemplateRepository = alarmTriggerTemplateRepository;
+        this.spamDetectionTemplateRepository = spamDetectionTemplateRepository;
     }
+    
+    
 
     /**
      * Initializes chefadvisor.
@@ -131,12 +141,12 @@ public class ChefadvisorApp {
 
     	InputStream spamDetectionTemplate = getClass().getResourceAsStream("/sbnz/integracija/spam-protection.drt");
         
-        List<SpamDetectionTemplateModel> spamDetectionData = new ArrayList<SpamDetectionTemplateModel>();
+//        List<SpamDetectionTemplateModel> spamDetectionData = new ArrayList<SpamDetectionTemplateModel>();
+//        
+//        spamDetectionData.add(new SpamDetectionTemplateModel(9, 6, "SPAMMING_COMMENTS"));
+//        spamDetectionData.add(new SpamDetectionTemplateModel(2, 3, "SPAMMING_BAD_RATING"));
         
-        spamDetectionData.add(new SpamDetectionTemplateModel(9, 6, "SPAMMING_COMMENTS"));
-        spamDetectionData.add(new SpamDetectionTemplateModel(2, 3, "SPAMMING_BAD_RATING"));
-        
-        String spamDetectionDRL = converter.compile(spamDetectionData, spamDetectionTemplate);
+        String spamDetectionDRL = converter.compile(this.spamDetectionTemplateRepository.findAll(), spamDetectionTemplate);
         
         System.out.println(spamDetectionDRL);
         
@@ -145,12 +155,14 @@ public class ChefadvisorApp {
 
         InputStream alarmTriggerTemplate = getClass().getResourceAsStream("/sbnz/integracija/alarm.drt");
         
-        List<AlarmTriggerTemplateModel> alarmTemplateData = new ArrayList<AlarmTriggerTemplateModel>();
+//        List<AlarmTriggerTemplateModel> alarmTemplateData = new ArrayList<AlarmTriggerTemplateModel>();
+//        
+//        alarmTemplateData.add(new AlarmTriggerTemplateModel(2));
         
-        alarmTemplateData.add(new AlarmTriggerTemplateModel(2));
+        String alarmTriggerDRL = converter.compile(this.alarmTriggerTemplateRepository.findAll(), alarmTriggerTemplate);
         
-        String alarmTriggerDRL = converter.compile(alarmTemplateData, alarmTriggerTemplate);
-        
+        System.out.println(alarmTriggerDRL);
+
         kieHelper.addContent(alarmTriggerDRL, ResourceType.DRL);
 
         return kieHelper.build().newKieSession();

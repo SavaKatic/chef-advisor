@@ -7,6 +7,7 @@ package sbnz.integracija;
 
 import sbnz.integracija.chefadvisor.events.UserActionEvent;
 import sbnz.integracija.chefadvisor.domain.enumeration.WarningType;
+import sbnz.integracija.chefadvisor.facts.AlarmInputFact
 
 declare SuspiciousUserActionEvent
     @role(event)
@@ -23,6 +24,7 @@ template "alarm-rules"
 rule "More than @{numberOfSuspiciousActions} suspicious user actions trigger a potential spammer alarm_@{row.rowNumber}"
 	salience $k
     when
+    	$aif: AlarmInputFact()
         SuspiciousUserActionEvent($userId: userId)
         not (AlarmTriggered(userId == $userId))
         $k: Number(intValue >= @{numberOfSuspiciousActions}) from accumulate(
@@ -31,7 +33,8 @@ rule "More than @{numberOfSuspiciousActions} suspicious user actions trigger a p
         )
     then
         System.out.println("@{warningMessage}" + $userId);
-        insert(new AlarmTriggered($userId));
+        $aif.setUserId($userId);
+        $aif.setMessage("@{warningMessage}");
 end
 
 end template

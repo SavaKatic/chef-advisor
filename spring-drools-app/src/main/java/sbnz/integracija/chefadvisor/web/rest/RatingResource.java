@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +26,11 @@ import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import sbnz.integracija.chefadvisor.domain.User;
 import sbnz.integracija.chefadvisor.events.UserActionEvent;
+import sbnz.integracija.chefadvisor.facts.AlarmInputFact;
 import sbnz.integracija.chefadvisor.repository.UserRepository;
+import sbnz.integracija.chefadvisor.service.AlarmService;
 import sbnz.integracija.chefadvisor.service.RatingService;
+import sbnz.integracija.chefadvisor.service.dto.AlarmDTO;
 import sbnz.integracija.chefadvisor.service.dto.RatingDTO;
 import sbnz.integracija.chefadvisor.web.rest.errors.BadRequestAlertException;
 
@@ -50,12 +52,15 @@ public class RatingResource {
     
     private final UserRepository userRepository;
     
+    private final AlarmService alarmService;
+    
     @Autowired
     private KieSession cepKieSession;
 
-    public RatingResource(RatingService ratingService, UserRepository userRepository) {
+    public RatingResource(RatingService ratingService, UserRepository userRepository, AlarmService alarmService) {
         this.ratingService = ratingService;
         this.userRepository = userRepository;
+        this.alarmService = alarmService;
     }
 
     /**
@@ -78,8 +83,17 @@ public class RatingResource {
         	ratingDTO.setUserId(user.getId());
         }
         RatingDTO result = ratingService.save(ratingDTO);
+        AlarmInputFact aif = new AlarmInputFact();
         this.cepKieSession.insert(new UserActionEvent(result.getUserId(), Double.parseDouble(result.getRating().toString())));
+        this.cepKieSession.insert(aif);
         this.cepKieSession.fireAllRules();
+        if (aif.getMessage() != null) {
+        	AlarmDTO alarmDTO = new AlarmDTO();
+        	alarmDTO.setMessage(aif.getMessage());
+        	alarmDTO.setUserId(aif.getUserId());
+        	this.alarmService.save(alarmDTO);
+        }
+        
         return ResponseEntity.created(new URI("/api/ratings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);

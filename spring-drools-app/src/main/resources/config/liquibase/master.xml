@@ -22,11 +22,15 @@
     <include file="config/liquibase/changelog/20200510170800_added_entity_Dish.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200510170900_added_entity_CalorieConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200515194000_added_entity_Rating.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200704235300_added_entity_AlarmTriggerTemplate.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200704235400_added_entity_SpamDetectionTemplate.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200704235500_added_entity_Alarm.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20200510170300_added_entity_constraints_Ingredient.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200510170700_added_entity_constraints_IngredientModel.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200510170800_added_entity_constraints_Dish.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200510170900_added_entity_constraints_CalorieConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200515194000_added_entity_constraints_Rating.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200704235500_added_entity_constraints_Alarm.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
