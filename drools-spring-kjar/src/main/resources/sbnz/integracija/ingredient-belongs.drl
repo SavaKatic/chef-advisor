@@ -1,0 +1,30 @@
+package sbnz.integracija;
+
+import sbnz.integracija.chefadvisor.facts.BackwardsIngredientFact
+import sbnz.integracija.chefadvisor.domain.Dish
+import sbnz.integracija.chefadvisor.domain.Ingredient
+import sbnz.integracija.chefadvisor.domain.enumeration.IngredientBelonging
+
+query belongsTo(String $ingredient, String $dish)
+    $i:= Ingredient( ingredientModel.name.equals( $ingredient ) == true )
+    $d:= Dish( name.equals($dish) == true && $i memberOf ingredients )
+end
+
+
+rule "Check if ingredient belongs to dish positive"
+	agenda-group "backwards"
+	when
+		$bif: BackwardsIngredientFact(belonging == IngredientBelonging.NA, $ingredient: ingredient, $dish: dish)
+		belongsTo($ingredient, $dish; )
+    then
+    	$bif.setBelonging(IngredientBelonging.BELONGS);
+end
+
+rule "Check if ingredient belongs to dish negative"
+	agenda-group "backwards"
+	when
+		$bif: BackwardsIngredientFact(belonging == IngredientBelonging.NA, $ingredient: ingredient, $dish: dish)
+		not belongsTo($ingredient, $dish; )
+    then
+    	$bif.setBelonging(IngredientBelonging.NOT_BELONGS);
+end

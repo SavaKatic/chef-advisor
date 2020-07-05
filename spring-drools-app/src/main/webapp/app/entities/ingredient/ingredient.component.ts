@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, Validators } from '@angular/forms';
 
 import { IIngredient } from 'app/shared/model/ingredient.model';
 
@@ -26,6 +27,12 @@ export class IngredientComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
   isFridge = false;
+  belongsText = '';
+
+  ingredientBelongingForm = this.fb.group({
+    ingredient: ['', [Validators.required]],
+    dish: ['', [Validators.required]]
+  })
 
   constructor(
     protected ingredientService: IngredientService,
@@ -33,7 +40,8 @@ export class IngredientComponent implements OnInit, OnDestroy {
     protected router: Router,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
-    protected accountService: AccountService
+    protected accountService: AccountService,
+    private fb: FormBuilder
   ) {}
 
   loadPage(page?: number): void {
@@ -119,5 +127,12 @@ export class IngredientComponent implements OnInit, OnDestroy {
 
   protected onError(): void {
     this.ngbPaginationPage = this.page;
+  }
+
+  public search(): void {
+    const queryString = `?ingredient=${this.ingredientBelongingForm.get(['ingredient'])!.value}&dish=${this.ingredientBelongingForm.get(['dish'])!.value}`;
+    this.ingredientService.getIfIngredientBelongsToDish(queryString).subscribe((data: any) => {
+      this.belongsText = data.body ? 'It belongs.' : "It doesn't belong.";
+    });
   }
 }

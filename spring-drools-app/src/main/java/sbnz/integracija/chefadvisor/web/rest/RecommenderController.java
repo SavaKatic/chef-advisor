@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sbnz.integracija.chefadvisor.domain.CalorieConfiguration;
+import sbnz.integracija.chefadvisor.facts.BackwardsIngredientFact;
 import sbnz.integracija.chefadvisor.facts.SearchInputFact;
 import sbnz.integracija.chefadvisor.service.CalorieConfigurationService;
 import sbnz.integracija.chefadvisor.service.RecommenderService;
@@ -48,6 +49,13 @@ public class RecommenderController {
 	public ResponseEntity<List<IngredientDTO>> reverseSearchMissingIngredients(@RequestParam(required = true) Long dishId) {
 		List<IngredientDTO> ingredients = this.recommenderService.reverseSearchMissingIngredients(dishId);
 		return ResponseEntity.ok().body(ingredients);
+	}
+	
+	@RequestMapping(value = "/ingredient-belonging", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Boolean> getIfIngredientBelongsToDish(@RequestParam(required = true) String ingredient, @RequestParam(required = true) String dish) {
+		boolean result = this.recommenderService.getIfIngredientBelongsToDish(ingredient, dish);
+		System.out.println(result);
+		return ResponseEntity.ok().body(result);
 	}
 	
 	

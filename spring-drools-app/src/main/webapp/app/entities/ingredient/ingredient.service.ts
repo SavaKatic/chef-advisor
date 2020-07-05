@@ -39,4 +39,8 @@ export class IngredientService {
   getFridge(): Observable<HttpResponse<IIngredient[]>> {
     return this.http.get<IIngredient[]>('api/fridge', { observe: 'response' });
   }
+
+  getIfIngredientBelongsToDish(query: string): Observable<HttpResponse<boolean>> {
+    return this.http.get<boolean>(`api/ingredient-belonging${query}`, { observe: 'response'});
+  }
 }

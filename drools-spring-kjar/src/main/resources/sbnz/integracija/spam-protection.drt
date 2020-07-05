@@ -14,6 +14,10 @@ declare SuspiciousUserActionEvent
     reason: WarningType
 end
 
+declare window MyWindow
+	UserActionEvent() over window:time(1h)
+end
+
 template "spam-protection-rules"
 
 rule "More than @{numberOfComments} comments in an hour from a single user_@{row.rowNumber}"
@@ -22,9 +26,8 @@ rule "More than @{numberOfComments} comments in an hour from a single user_@{row
         Number(intValue >= @{numberOfComments}) from accumulate(
             $a2: UserActionEvent(
                 this != $a1, 
-                userId == $userId, 
-                this meets[1h] $a1
-            ),
+                userId == $userId
+            ) from window MyWindow,
             count($a2)
         )
         not (SuspiciousUserActionEvent(userId == $userId, reason == WarningType.@{reason}))

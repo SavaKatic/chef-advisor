@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import sbnz.integracija.chefadvisor.domain.Dish;
 import sbnz.integracija.chefadvisor.domain.Ingredient;
+import sbnz.integracija.chefadvisor.domain.enumeration.IngredientBelonging;
+import sbnz.integracija.chefadvisor.facts.BackwardsIngredientFact;
 import sbnz.integracija.chefadvisor.facts.SearchInputFact;
 import sbnz.integracija.chefadvisor.facts.SearchResultFact;
 import sbnz.integracija.chefadvisor.repository.DishRepository;
@@ -92,5 +94,29 @@ public class RecommenderService {
 		return ingredientMapper.toDto(new ArrayList<Ingredient>(srf.getMissingIngredients()));
 	}
 
+	public boolean getIfIngredientBelongsToDish(String ingredient, String dish) {
+		System.out.println(ingredient);
+		System.out.println(dish);
+		BackwardsIngredientFact bif = new BackwardsIngredientFact(ingredient, dish);
+		KieSession kieSession = kieContainer.newKieSession();
+		
+		kieSession.insert(bif);
+		List<Dish> allDishesList = dishRepository.findAllWithEagerRelationships();
+		List<Ingredient> allIngredientsList = ingredientRepository.findAll();
+		for(Dish d: allDishesList) {
+			kieSession.insert(d);
+		}
+		for(Ingredient i: allIngredientsList) {
+			kieSession.insert(i);
+		}
+		
+		kieSession.getAgenda().getAgendaGroup("backwards").setFocus();
+		kieSession.fireAllRules();
+	    kieSession.dispose();
+	    
+	    System.out.println(bif.getBelonging());
+		
+	    return bif.getBelonging() == IngredientBelonging.BELONGS;
+	}
 
 }
