@@ -29,8 +29,8 @@ export class SearchDishesComponent implements OnInit, OnDestroy {
 
   searchForm = this.fb.group({
     strict: [false, [Validators.required]],
-    dishType: ['', [Validators.required]],
-    dishCategory: ['', [Validators.required]]
+    dishType: [''],
+    dishCategory: ['']
   })
 
   constructor(

@@ -37,7 +37,8 @@ public class RecommenderController {
 	public ResponseEntity<List<DishDTO>> getPossibleDishes(@RequestParam(required = true) boolean isStrict, @RequestParam(required = true) String dishType,
 			@RequestParam(required = true) String dishCategory) {
 		CalorieConfiguration config = calorieConfigurationService.findByUserIsCurrentUser();
-		
+		dishCategory = dishCategory.equals("") ? "NA" : dishCategory;
+		dishType = dishType.equals("") ? null : dishType;
 		SearchInputFact s = new SearchInputFact(isStrict, dishCategory, dishType, config);
 		List<DishDTO> dishes = this.recommenderService.getPossibleDishes(s);
 		return ResponseEntity.ok().body(dishes);

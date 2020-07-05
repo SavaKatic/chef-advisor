@@ -52,7 +52,6 @@ public class PossibleDishesTest {
 	    
 		assertEquals(2, s.getDishes().size());
 	    
-	    // pokrecem search pravila - izvrsice se samo prvo za "non-strict" search
 	    kieSession.getAgenda().getAgendaGroup("search").setFocus();
 		kieSession.fireAllRules();
 		kieSession.dispose();
@@ -165,6 +164,9 @@ public class PossibleDishesTest {
 	
 	@Test
 	public void testReplacementIngredient() {
+		/*
+		 * Cilj: pronalazenje moguceg jela upotrebom zamenskog sastojka
+		 * */
 		// pravljenje novog kie session-a
 		KieServices ks = KieServices.Factory.get();
 		KieContainer kContainer = ks
@@ -227,6 +229,9 @@ public class PossibleDishesTest {
 	
 	@Test
 	public void testAdjustingCalories() {
+		/*
+		 * Cilj: manipulacija kolicinom sastojaka kako bi se kalorije ubacile u opseg
+		 * */
 		// pravljenje novog kie session-a
 		KieServices ks = KieServices.Factory.get();
 		KieContainer kContainer = ks
@@ -287,5 +292,43 @@ public class PossibleDishesTest {
 		// sastojak u fridge-u bude odabrano
 		assertEquals(1, s.getDishes().size());
 		assertEquals(980, s.getDishes().get(0).getCalories());  
+	}
+	
+	@Test
+	public void testSearchWithDefaultTypeAndCategory() {
+		/*
+		 * Cilj: pronalazenje jela po default tipu i kategoriji
+		 * */
+		
+		// pravljenje novog kie session-a
+		KieServices ks = KieServices.Factory.get();
+		KieContainer kContainer = ks
+          .newKieContainer(ks.newReleaseId("sbnz.integracija", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
+	    KieSession kieSession = kContainer.newKieSession();
+	    
+	    // dodavanje dva jela, jedan za breakfast i drugi dinner
+	    Dish dish1 = new Dish(1l, "test dish", DishCategory.BREAKFAST, "cool description", 4.3, new HashSet<Ingredient>(), new DishType(1l, "Salad"));
+	    Dish dish2 = new Dish(2l, "test dish 2", DishCategory.DINNER, "cool description", 4.2, new HashSet<Ingredient>(), new DishType(2l, "Meat"));
+	    
+	    // fact koji sadrzi sve inpute za search
+	    SearchInputFact s = new SearchInputFact(false, DishCategory.NA.toString(), null, new CalorieConfiguration());
+
+	    // sva jela ubacujem u input fact
+        List<Dish> allDishesList = new ArrayList<Dish>();
+        allDishesList.add(dish1);
+        allDishesList.add(dish2);
+        s.setDishes(allDishesList);
+        
+	    // input fact insertujem u novokreirani session
+	    kieSession.insert(s);
+	    
+		assertEquals(2, s.getDishes().size());
+	    
+	    kieSession.getAgenda().getAgendaGroup("search").setFocus();
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		
+		// ne filtrira se po kategoriji i tipu pa velicina niza treba biti nepromenjena
+		assertEquals(2, s.getDishes().size());
 	}
 }

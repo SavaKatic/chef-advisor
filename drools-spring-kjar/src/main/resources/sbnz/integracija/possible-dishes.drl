@@ -7,10 +7,50 @@ import sbnz.integracija.chefadvisor.domain.enumeration.DishCategory
 import sbnz.integracija.chefadvisor.domain.Ingredient
 
 
+rule "Find Dishes - apply default when type is missing"
+	salience 10
+	agenda-group "search"
+	when
+		$sif1: SearchInputFact(type == null && defaults == false)
+	then
+		$sif1.setDefaults(true);
+		update($sif1);
+end
+		
+rule "Find Dishes - apply default when category is missing"
+	salience 10
+	agenda-group "search"
+	when
+		$sif2: SearchInputFact(category == DishCategory.NA && defaults == false)
+	then
+		$sif2.setDefaults(true);
+		update($sif2);
+end
+		
+rule "Find dishes - set default category"
+	salience 10
+	agenda-group "search"
+	when
+		$sif3: SearchInputFact(defaults == true && category == DishCategory.NA)
+	then
+		$sif3.setCategory(DishCategory.ALL);
+		update($sif3);
+end
+		
+rule "Find dishes - set default type"
+	salience 10
+	agenda-group "search"
+	when
+		$sif4: SearchInputFact(defaults == true && category == DishCategory.ALL && type == null)
+	then
+		$sif4.setType("NO TYPE");
+		update($sif4);
+end
+
 rule "Find Dishes - remove based on category"
 	agenda-group "search"
 	when
-        $sif: SearchInputFact($dishes: dishes)
+        $sif: SearchInputFact(defaults == false, $dishes: dishes)
 		$d: Dish( category != $sif.category ) from $dishes
 	then
 		$sif.getDishes().remove($d);
@@ -20,7 +60,7 @@ end
 rule "Find Dishes - remove based on type"
 	agenda-group "search"
 	when
-		$sif: SearchInputFact($dishes: dishes)
+		$sif: SearchInputFact(defaults == false, $dishes: dishes)
 		$d: Dish( dishType.name.equals($sif.type) == false ) from $dishes
 	then
 		$sif.getDishes().remove($d);
@@ -28,11 +68,11 @@ rule "Find Dishes - remove based on type"
 end
 
 rule "Find Dishes - remove strict non-matches"
-	salience 1
+	salience $averageRating
 	agenda-group "search"
 	when
 		$sif: SearchInputFact( strict == true, $dishes: dishes)
-	    $d: Dish( $requiredIngredients: ingredients ) from $dishes
+	    $d: Dish( $requiredIngredients: ingredients, $averageRating: averageRating ) from $dishes
 	    $requiredIngredient: Ingredient() from $requiredIngredients
 	    SearchInputFact( $requiredIngredient not memberOf fridge )
 	then
