@@ -8,13 +8,13 @@ public class CalorieIntakeDTO {
 	private Double height;
 	private Integer age;
 	private Gender gender;
-	private ActivityLevel level;
+	private String level;
 	
 	public CalorieIntakeDTO() {
 		super();
 	}
 	
-	public CalorieIntakeDTO(Double bodyWeight, Double height, Integer age, Gender gender, ActivityLevel level) {
+	public CalorieIntakeDTO(Double bodyWeight, Double height, Integer age, Gender gender, String level) {
 		super();
 		this.bodyWeight = bodyWeight;
 		this.height = height;
@@ -48,13 +48,27 @@ public class CalorieIntakeDTO {
 		this.gender = gender;
 	}
 	
+	
+	
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
 	public Double calculateDailyIntake() {
 		Integer remainder = this.gender.equals(Gender.MALE) ? 5 : (161 * -1);
 		Double bmr = 10 * this.bodyWeight + 6.25 * this.height - 5 * this.age + remainder;
-		return bmr * this.level.getActivityIndex();
+		return bmr * ActivityLevel.valueOf(this.level).getActivityIndex();
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "CalorieIntakeDTO [bodyWeight=" + bodyWeight + ", height=" + height + ", age=" + age + ", gender="
+				+ gender + ", level=" + level + "]";
+	}
 	
 	
 }

@@ -16,6 +16,7 @@ public class SearchInputFact {
 	private Double minimumCalories;
 	private Double maximumCalories;
 	private List<Dish> dishes;
+	private boolean defaults;
 	
 	public SearchInputFact() {
 		this.fridge = new ArrayList<Ingredient>();
@@ -55,7 +56,7 @@ public class SearchInputFact {
 	}
 
 	public SearchInputFact(boolean strict, List<Ingredient> fridge, DishCategory category, String type,
-			Double minimumCalories, Double maximumCalories, List<Dish> dishes) {
+			Double minimumCalories, Double maximumCalories, List<Dish> dishes, boolean defaults) {
 		super();
 		this.strict = strict;
 		this.fridge = fridge;
@@ -64,6 +65,7 @@ public class SearchInputFact {
 		this.minimumCalories = minimumCalories;
 		this.maximumCalories = maximumCalories;
 		this.dishes = dishes;
+		this.defaults = defaults;
 	}
 
 	public boolean isStrict() {
@@ -121,5 +123,15 @@ public class SearchInputFact {
 	public void setDishes(List<Dish> dishes) {
 		this.dishes = dishes;
 	}
+
+	public boolean isDefaults() {
+		return defaults;
+	}
+
+	public void setDefaults(boolean defaults) {
+		this.defaults = defaults;
+	}
+	
+	
 		
 }

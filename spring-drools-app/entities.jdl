@@ -4,6 +4,22 @@ entity Ingredient {
 	amount Double
 }
 
+entity AlarmTriggerTemplate {
+	numberOfSuspiciousActions Integer,
+    warningMessage String
+}
+
+entity SpamDetectionTemplate {
+	numberOfComments Integer,
+    rating Integer,
+    reason String
+}
+
+entity Alarm {
+	message String,
+    numberOfSuspiciousActions Integer
+}
+
 entity DishType {
 	name String
 }
@@ -73,6 +89,7 @@ relationship ManyToOne {
 
 relationship OneToOne {
 	CalorieConfiguration{user(login)} to User
+    Alarm{user(login)} to User
 }
 
 

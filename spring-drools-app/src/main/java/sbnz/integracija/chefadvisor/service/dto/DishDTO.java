@@ -26,7 +26,7 @@ public class DishDTO implements Serializable {
 
     private Double averageRating;
 
-    private Set<UserDTO> users = new HashSet<>();
+    public Set<UserDTO> users = new HashSet<>();
 
     private Long dishTypeId;
 

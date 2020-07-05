@@ -1,0 +1,29 @@
+{
+    "name": "SpamDetectionTemplate",
+    "fields": [
+        {
+            "fieldName": "numberOfComments",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "rating",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "reason",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200704235400",
+    "entityTableName": "spam_detection_template",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

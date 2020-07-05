@@ -4,12 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, Validators } from '@angular/forms';
 
 import { IIngredient } from 'app/shared/model/ingredient.model';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { IngredientService } from './ingredient.service';
 import { IngredientDeleteDialogComponent } from './ingredient-delete-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-ingredient',
@@ -24,13 +26,22 @@ export class IngredientComponent implements OnInit, OnDestroy {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  isFridge = false;
+  belongsText = '';
+
+  ingredientBelongingForm = this.fb.group({
+    ingredient: ['', [Validators.required]],
+    dish: ['', [Validators.required]]
+  })
 
   constructor(
     protected ingredientService: IngredientService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected accountService: AccountService,
+    private fb: FormBuilder
   ) {}
 
   loadPage(page?: number): void {
@@ -50,6 +61,17 @@ export class IngredientComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(data => {
+      if (this.accountService.hasAnyAuthority('ROLE_USER')) {
+       // eslint-disable-next-line no-console
+        // this.ingredientService.getFridge().subscribe((ingredients: any) => {
+        //   this.ingredients = ingredients;
+        //   return;
+        // })
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        this.ingredients = data.ingredients || data.ingredient;
+        return;
+      }
       this.page = data.pagingParams.page;
       this.ascending = data.pagingParams.ascending;
       this.predicate = data.pagingParams.predicate;
@@ -57,6 +79,9 @@ export class IngredientComponent implements OnInit, OnDestroy {
       this.loadPage();
     });
     this.registerChangeInIngredients();
+    if(this.router.url === '/ingredient/fridge') {
+      this.isFridge = true;
+    }
   }
 
   ngOnDestroy(): void {
@@ -90,17 +115,24 @@ export class IngredientComponent implements OnInit, OnDestroy {
   protected onSuccess(data: IIngredient[] | null, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
-    this.router.navigate(['/ingredient'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
-    });
-    this.ingredients = data || [];
+    // this.router.navigate(['/ingredient'], {
+    //   queryParams: {
+    //     page: this.page,
+    //     size: this.itemsPerPage,
+    //     sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
+    //   }
+    // });
+    // this.ingredients = data || [];
   }
 
   protected onError(): void {
     this.ngbPaginationPage = this.page;
+  }
+
+  public search(): void {
+    const queryString = `?ingredient=${this.ingredientBelongingForm.get(['ingredient'])!.value}&dish=${this.ingredientBelongingForm.get(['dish'])!.value}`;
+    this.ingredientService.getIfIngredientBelongsToDish(queryString).subscribe((data: any) => {
+      this.belongsText = data.body ? 'It belongs.' : "It doesn't belong.";
+    });
   }
 }

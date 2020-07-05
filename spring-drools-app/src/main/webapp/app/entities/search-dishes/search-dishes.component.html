@@ -1,0 +1,117 @@
+<div>
+  <h2 id="page-heading">
+      <span>Search Dishes</span>
+
+      <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-dish" [routerLink]="['/dish/new']" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <fa-icon icon="plus"></fa-icon>
+          <span>
+          Create a new Dish
+          </span>
+      </button>
+  </h2>
+
+  <form name="searchForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="searchForm">
+    <div>
+      <div class="form-check">
+        <label class="form-check-label" for="strict">
+            <input class="form-check-input" type="checkbox" id="strict" name="strict" formControlName="strict">
+            <span>Strict</span>
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="form-control-label" for="field_dishCategory">Dish Category</label>
+        <input type="text" class="form-control" name="dishCategory" id="field_dishCategory"
+               formControlName="dishCategory"/>
+      </div>
+      <div class="form-group">
+        <label class="form-control-label" for="field_dishType">Dish Type</label>
+        <input type="text" class="form-control" name="dishType" id="field_dishType"
+               formControlName="dishType"/>
+      </div>
+      <button type="submit" [disabled]="searchForm.invalid" class="btn btn-primary">
+        <span>Search</span>
+      </button>
+    </div>
+  </form>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="dishes?.length === 0">
+      <span>No dishes found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="dishes?.length > 0">
+      <table class="table table-striped" aria-describedby="page-heading">
+          <thead>
+              <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                  <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"  jhiSortBy="name"><span>Name</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"  jhiSortBy="category"><span>Category</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"  jhiSortBy="image"><span>Image</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"  jhiSortBy="description"><span>Description</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"  jhiSortBy="averageRating"><span>Average Rating</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"  jhiSortBy="dishTypeName"><span>Dish Type</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"></th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let dish of dishes ;trackBy: trackId">
+                  <td><a [routerLink]="['/dish', dish.id, 'view']">{{ dish.id }}</a></td>
+                  <td>{{ dish.name }}</td>
+                  <td>{{ dish.category }}</td>
+                  <td>
+                      <a *ngIf="dish.image" (click)="openFile(dish.imageContentType, dish.image)">open</a>
+                      <span *ngIf="dish.image">{{ dish.imageContentType }}, {{ byteSize(dish.image) }}</span>
+                  </td>
+                  <td>{{ dish.description }}</td>
+                  <td>{{ dish.averageRating }}</td>
+                  <td>
+                      <div *ngIf="dish.dishTypeId">
+                          <a [routerLink]="['/dish-type', dish.dishTypeId , 'view']" >{{ dish.dishTypeName }}</a>
+                      </div>
+                  </td>
+                  <td class="text-right" *ngIf="isSearchApplied">
+                      <div class="btn-group">
+                          <button type="submit" (click)="choose(dish)"
+                                  class="btn btn-primary btn-sm">
+                              <span class="d-none d-md-inline">Choose</span>
+                          </button>
+                      </div>
+                  </td>
+                  <td class="text-right" *ngIf="!isSearchApplied">
+                    <div class="btn-group">
+                        
+                      <button type="submit"
+                              [routerLink]="['/search-dishes', dish.id, 'missing-ingredients']"
+                              class="btn btn-primary btn-sm">
+                          <span class="d-none d-md-inline">See missing</span>
+                      </button>
+                    </div>
+                  </td>
+                  <td class="text-right" *ngIf="!isSearchApplied">
+                    <div class="btn-group">
+                        
+                      <button type="submit"
+                              [routerLink]="['/search-dishes', dish.id, 'all-ingredients']"
+                              class="btn btn-primary btn-sm">
+                          <span class="d-none d-md-inline">Details</span>
+                      </button>
+                    </div>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+  <div *ngIf="dishes?.length > 0">
+      <div class="row justify-content-center">
+          <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+      </div>
+
+      <div class="row justify-content-center">
+          <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+      </div>
+  </div>
+</div>

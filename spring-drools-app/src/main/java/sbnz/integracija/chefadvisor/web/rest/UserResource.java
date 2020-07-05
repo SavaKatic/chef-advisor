@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import sbnz.integracija.chefadvisor.config.Constants;
+import sbnz.integracija.chefadvisor.domain.CalorieConfiguration;
 import sbnz.integracija.chefadvisor.domain.User;
 import sbnz.integracija.chefadvisor.repository.UserRepository;
 import sbnz.integracija.chefadvisor.security.AuthoritiesConstants;
@@ -208,9 +210,15 @@ public class UserResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)}.
      * */
     @PutMapping("/users/calories")
-    public ResponseEntity<Object> setCaloricIntake(@AuthenticationPrincipal User user, @RequestBody CalorieIntakeDTO calorieIntakeDTO) {
+    public ResponseEntity<Object> setCaloricIntake(@RequestBody CalorieIntakeDTO calorieIntakeDTO, @AuthenticationPrincipal UserDetails loggedUser) {
+    	User user = userRepository.findOneByLogin(loggedUser.getUsername()).orElse(null);
+
     	Double intake = calorieIntakeDTO.calculateDailyIntake();
     	CalorieConfigurationDTO calorieConfigurationDTO = new CalorieConfigurationDTO(intake, user);
+    	CalorieConfiguration existingConfiguration = calorieConfigurationService.findByUserIsCurrentUser();
+    	if (existingConfiguration != null) {
+    		calorieConfigurationService.delete(existingConfiguration.getId());
+    	}
         CalorieConfigurationDTO result = calorieConfigurationService.save(calorieConfigurationDTO);
     	return ResponseEntity.ok().body(result);
     }

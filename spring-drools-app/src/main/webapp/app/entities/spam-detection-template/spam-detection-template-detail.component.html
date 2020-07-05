@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="spamDetectionTemplate">
+            <h2><span>Spam Detection Template</span> {{ spamDetectionTemplate.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Number Of Comments</span></dt>
+                <dd>
+                    <span>{{ spamDetectionTemplate.numberOfComments }}</span>
+                </dd>
+                <dt><span>Rating</span></dt>
+                <dd>
+                    <span>{{ spamDetectionTemplate.rating }}</span>
+                </dd>
+                <dt><span>Reason</span></dt>
+                <dd>
+                    <span>{{ spamDetectionTemplate.reason }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/spam-detection-template', spamDetectionTemplate.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

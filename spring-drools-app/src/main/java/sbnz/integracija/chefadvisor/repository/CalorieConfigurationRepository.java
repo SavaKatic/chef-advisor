@@ -16,4 +16,5 @@ import org.springframework.stereotype.Repository;
 public interface CalorieConfigurationRepository extends JpaRepository<CalorieConfiguration, Long> {
 	@Query("select config from CalorieConfiguration config inner join config.user u where u.login = ?#{principal.username}")
     List<CalorieConfiguration> findByUserIsCurrentUser();
+	
 }

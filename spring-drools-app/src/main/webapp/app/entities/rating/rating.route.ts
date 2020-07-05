@@ -7,6 +7,8 @@ import { flatMap } from 'rxjs/operators';
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { IRating, Rating } from 'app/shared/model/rating.model';
+import { IDish, Dish } from 'app/shared/model/dish.model';
+import { DishService } from '../dish/dish.service';
 import { RatingService } from './rating.service';
 import { RatingComponent } from './rating.component';
 import { RatingDetailComponent } from './rating-detail.component';
@@ -23,6 +25,31 @@ export class RatingResolve implements Resolve<IRating> {
         flatMap((rating: HttpResponse<Rating>) => {
           if (rating.body) {
             return of(rating.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
+    }
+    return of(new Rating());
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class RatingDishResolve implements Resolve<IRating> {
+  constructor(private service: DishService, private router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IRating> | Observable<never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
+        flatMap((dish: HttpResponse<Dish>) => {
+          if (dish.body) {
+            const newRating = new Rating();
+            newRating.dishId = dish.body.id;
+            newRating.dishName = dish.body.name;
+            return of(newRating);
           } else {
             this.router.navigate(['404']);
             return EMPTY;
@@ -73,6 +100,18 @@ export const ratingRoute: Routes = [
     component: RatingUpdateComponent,
     resolve: {
       rating: RatingResolve
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'Ratings'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/comment',
+    component: RatingUpdateComponent,
+    resolve: {
+      rating: RatingDishResolve
     },
     data: {
       authorities: [Authority.USER],

@@ -39,7 +39,7 @@ public class RuleTemplatesTest {
         ksession.insert(event4);
         
         int numberOfFiredRules = ksession.fireAllRules();
-        assertEquals(numberOfFiredRules, 2);
+        assertEquals(numberOfFiredRules, 1);
     }
 	
 	private KieSession createKieSession() {

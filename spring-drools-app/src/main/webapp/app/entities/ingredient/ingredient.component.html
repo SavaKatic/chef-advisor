@@ -2,13 +2,44 @@
     <h2 id="page-heading">
         <span>Ingredients</span>
 
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-ingredient" [routerLink]="['/ingredient/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-ingredient" [routerLink]="['/ingredient/new']" *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <fa-icon icon="plus"></fa-icon>
             <span>
             Create a new Ingredient
             </span>
         </button>
+
+        <span *ngIf="isFridge">
+          <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-ingredient" [routerLink]="['/ingredient/new']" *jhiHasAnyAuthority="'ROLE_USER'">
+            <fa-icon  icon="plus"></fa-icon>
+            <span>
+            Add to fridge
+            </span>
+          </button>
+        </span>
+        
     </h2>
+
+    <div *ngIf="isFridge">
+      <form name="ingredientBelongingForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="ingredientBelongingForm">
+        <div>
+          <div class="form-group">
+            <label class="form-control-label" for="field_ingredient">Ingredient</label>
+            <input type="text" class="form-control" name="ingredient" id="field_ingredient"
+                   formControlName="ingredient"/>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" for="field_dish">Dish</label>
+            <input type="text" class="form-control" name="dish" id="field_dish"
+                   formControlName="dish"/>
+          </div>
+          <button type="submit" [disabled]="ingredientBelongingForm.invalid" class="btn btn-primary">
+            <span>Check</span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <span>{{belongsText}}</span>
 
     <jhi-alert-error></jhi-alert-error>
 
@@ -53,7 +84,7 @@
                             <a [routerLink]="['/ingredient', ingredient.ingredientId , 'view']" >{{ ingredient.ingredientId }}</a>
                         </div>
                     </td>
-                    <td class="text-right">
+                    <td class="text-right" *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <div class="btn-group">
                             <button type="submit"
                                     [routerLink]="['/ingredient', ingredient.id, 'view']"
@@ -75,6 +106,15 @@
                                 <span class="d-none d-md-inline">Delete</span>
                             </button>
                         </div>
+                    </td>
+                    <td class="text-right" *jhiHasAnyAuthority="'ROLE_USER'">
+                      <div *ngIf="isFridge" class="btn-group">
+                          <button type="submit" (click)="delete(ingredient)"
+                                  class="btn btn-danger btn-sm">
+                              <fa-icon icon="times"></fa-icon>
+                              <span class="d-none d-md-inline">Delete</span>
+                          </button>
+                      </div>
                     </td>
                 </tr>
             </tbody>

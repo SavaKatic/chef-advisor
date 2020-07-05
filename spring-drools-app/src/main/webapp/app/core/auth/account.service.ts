@@ -20,6 +20,13 @@ export class AccountService {
     return this.http.post(SERVER_API_URL + 'api/account', account);
   }
 
+  getUsername(): string {
+    if (this.userIdentity) {
+      return this.userIdentity?.login;
+    }
+    return '';
+  }
+
   authenticate(identity: Account | null): void {
     this.userIdentity = identity;
     this.authenticationState.next(this.userIdentity);
